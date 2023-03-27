@@ -27,14 +27,14 @@ export class LoginComponent {
   onSubmit() {
     console.log(`Użytkownik ${this.username} próbuje się zalogować.`);
     // kod autentykacji użytkownika
-    let endpoint = "http://localhost:5067/login"
+    const endpoint = "http://localhost:5067/login";
 
-      let data = {
+    const user = {
       username: this.username,
       password: this.password
     };
 
-    this.http.post(endpoint, data).subscribe(response => {
+    this.http.post(endpoint, user).subscribe(response => {
       console.log(response); // odpowiedź z serwera
     }, error => {
       console.error(error); // błąd podczas wywołania endpointu

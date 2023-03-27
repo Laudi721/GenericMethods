@@ -17,12 +17,6 @@ namespace Office.Controllers
             _accountService = accountService;
         }
 
-        //[HttpPost]
-        //public ActionResult LoginUser([FromBody] LoginDto loginDto)
-        //{
-        //    return Ok();
-        //}
-
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginDto loginDto)
         {

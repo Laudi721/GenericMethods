@@ -19,6 +19,7 @@
   /* szerokosc miedzy loginem i haslem */
   .form-group {
     margin-bottom: 20px;
+    margin-top: 20px;
   }
   
   .mat-toolbar{
