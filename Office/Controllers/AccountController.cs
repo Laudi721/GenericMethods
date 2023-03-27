@@ -7,6 +7,7 @@ using Office.Interfaces;
 
 namespace Office.Controllers
 {
+    [ApiController]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -16,25 +17,29 @@ namespace Office.Controllers
             _accountService = accountService;
         }
 
-        [HttpPost]
-        public ActionResult LoginUser([FromBody] LoginDto loginDto)
-        {
-            return Ok();
-        }
+        //[HttpPost]
+        //public ActionResult LoginUser([FromBody] LoginDto loginDto)
+        //{
+        //    return Ok();
+        //}
 
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginDto loginDto)
         {
+            if (!_accountService.CheckUser(loginDto))
+            {
+                return BadRequest("Nieprawidłowy login lub hasło");
+            }
+
             var token = _accountService.GenerateJwt(loginDto);
 
             return Ok(token);
         }
 
-        [Authorize]
         [HttpPost("logout")]
-        public async Task<ActionResult> Logout()
+        [Authorize]
+        public async Task<ActionResult> Logout(string token)
         {
-
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             
             return Ok();

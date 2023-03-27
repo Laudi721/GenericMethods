@@ -62,5 +62,21 @@ namespace Office.Services
 
             return tokenHandler.WriteToken(token);
         }
+
+        public bool CheckUser(LoginDto loginDto)
+        {
+            var user = Context.Set<User>()
+                .FirstOrDefault(a => a.Login == loginDto.Login && !a.IsDeleted);
+
+            if(user == null)
+                return false;
+
+            var verifiedPass = _passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password);
+
+            if (verifiedPass != PasswordVerificationResult.Success)
+                return false;
+
+            return true;
+        }
     }
 }

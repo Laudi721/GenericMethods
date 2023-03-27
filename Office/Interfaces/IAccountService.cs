@@ -8,5 +8,7 @@ namespace Office.Interfaces
         public bool LoginUser(LoginDto loginDto);
 
         public string GenerateJwt(LoginDto loginDto);
+
+        public bool CheckUser(LoginDto loginDto);
     }
 }

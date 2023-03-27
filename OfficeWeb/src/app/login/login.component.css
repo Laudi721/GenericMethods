@@ -1,0 +1,62 @@
+/* .main-div mat-card{
+    padding: 10px;
+}
+.login-form {
+    padding: 0px;
+} */
+
+.login-form {
+    margin: auto;
+    max-width: 400px;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+  }
+  /* szerokosc miedzy loginem i haslem */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .mat-toolbar{
+    color: #fff;
+    background-color: #226d1f;
+    margin: auto;
+    border-radius: 3px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+  }
+  
+  button[type="submit"] {
+    background-color: #12e20b;background-color: #226d1f;
+    color: #fff;
+    padding: 10px 44.5%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+
+  
+  

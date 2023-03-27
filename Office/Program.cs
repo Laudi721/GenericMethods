@@ -9,7 +9,6 @@ using Office.Services;
 using Office.Authentication;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,6 +17,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
 
 //var connectionString = builder.Configuration.GetConnectionString("SCADAConnectionString");
 //builder.Services.AddDbContext<SCADA>(options => options.UseSqlite(connectionString));
@@ -61,6 +62,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseAuthorization();
 
