@@ -34,7 +34,7 @@ namespace Database.Migrations
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     Hired = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Fired = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fired = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsFired = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     TimeDeleted = table.Column<DateTime>(type: "datetime2", nullable: true)

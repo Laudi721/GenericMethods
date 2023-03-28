@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(Scada))]
-    [Migration("20230328145127_Init")]
+    [Migration("20230328155114_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,7 @@ namespace Database.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("Fired")
+                    b.Property<DateTime?>("Fired")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Hired")

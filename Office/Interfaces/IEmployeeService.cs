@@ -1,9 +1,12 @@
-﻿using Dtos.Dtos;
+﻿using Database.Models;
+using Dtos.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Office.Interfaces.Generic;
 
 namespace Office.Interfaces
 {
-    public interface IEmployeeService
+    public interface IEmployeeService : IGenericService<Employee, EmployeeDto>
     {
         public IQueryable<EmployeeDto> Get();
 

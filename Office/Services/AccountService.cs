@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Office.Services
 {
@@ -38,7 +39,10 @@ namespace Office.Services
                 .FirstOrDefault(a => a.Login == loginDto.Login);
 
             if (employee == null)
+            {
+                return null;
                 throw new BadRequestException("Niepoprawny login lub hasło");
+            }
 
             var result = _passwordHasher.VerifyHashedPassword(employee, employee.Password, loginDto.Password);
 

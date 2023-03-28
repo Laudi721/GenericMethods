@@ -22,8 +22,10 @@ namespace Dtos.Dtos
 
         public string Surname { get; set; }
 
+        public RoleDto Role { get; set; }
+
         public DateTime Hired{ get; set; }
 
-        public DateTime Fired { get; set; }
+        public DateTime? Fired { get; set; }
     }
 }

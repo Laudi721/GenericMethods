@@ -9,6 +9,10 @@ using Office.Services;
 using Office.Authentication;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Office.Interfaces.Generic;
+using Office.Controllers.Generic;
+using Office.Services.Generic;
+using Dtos.Dtos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,10 +27,13 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddDbContext<SCADA>(options => options.UseSqlite(connectionString));
 builder.Services.AddDbContext<Scada>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("ScadaConnectionString")));
 builder.Services.AddScoped<AdminSeeder>();
+builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
+builder.Services.AddScoped<IPasswordHasher<EmployeeDto>, PasswordHasher<EmployeeDto>>();
 
 //Authentication
 var authenticationSettings = new AuthenticationSettings();
+DependencyInjection(builder);
 builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
 builder.Services.AddAuthentication(option =>
 {
@@ -46,7 +53,6 @@ builder.Services.AddAuthentication(option =>
 });
 
 ///Dependency injection
-DependencyInjection(builder);
 
 var app = builder.Build();
 
@@ -82,4 +88,10 @@ void DependencyInjection(WebApplicationBuilder builder)
 {
     builder.Services.AddScoped<IAccountService, AccountService>();
     builder.Services.AddSingleton(authenticationSettings);
+    //builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+    //builder.Services.AddScoped<IGenericService<Employee, EmployeeDto>, EmployeeService>();
+    //builder.Services.AddScoped<IRoleService, RoleService>();
+    //builder.Services.AddScoped<IGenericService<Role, RoleDto>, RoleService>();
+    builder.Services.AddScoped<IGenericService<Role, RoleDto>>(x => x.GetRequiredService<IRoleService>());
+    builder.Services.AddScoped<IGenericService<Employee, EmployeeDto>>(a => a.GetRequiredService<IEmployeeService>());
 }

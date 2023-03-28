@@ -28,7 +28,7 @@ namespace Database.Models
         public DateTime Hired { get; set; }
 
         [Column(TypeName = "datetime2")]
-        public DateTime Fired { get; set; }
+        public DateTime? Fired { get; set; }
 
         public bool IsFired { get; set; }
 

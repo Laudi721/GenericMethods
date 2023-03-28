@@ -30,7 +30,7 @@ namespace Database.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("Fired")
+                    b.Property<DateTime?>("Fired")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Hired")
