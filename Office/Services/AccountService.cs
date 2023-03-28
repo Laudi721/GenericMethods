@@ -20,7 +20,7 @@ namespace Office.Services
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly AuthenticationSettings _authenticationSettings;
 
-        public AccountService(SCADADbContext context, IPasswordHasher<User> passwordHasher, AuthenticationSettings authenticationSettings) : base(context)
+        public AccountService(SCADA context, IPasswordHasher<User> passwordHasher, AuthenticationSettings authenticationSettings) : base(context)
         {
             _passwordHasher = passwordHasher;
             _authenticationSettings = authenticationSettings;

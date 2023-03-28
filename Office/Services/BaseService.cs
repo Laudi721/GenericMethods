@@ -4,8 +4,8 @@ namespace Office.Services
 {
     public class BaseService
     {
-        public SCADADbContext Context;
+        public SCADA Context;
 
-        public BaseService(SCADADbContext context) {  Context = context; }
+        public BaseService(SCADA context) {  Context = context; }
     }
 }
