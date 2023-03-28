@@ -7,7 +7,7 @@ namespace Office.Services
 {
     public class EmployeeService : BaseService, IEmployeeService
     {
-        public EmployeeService(SCADA context) : base(context)
+        public EmployeeService(Scada context) : base(context)
         {
         }
 

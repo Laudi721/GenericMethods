@@ -11,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("SCADAConnectionString");
-builder.Services.AddDbContext<SCADA>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<Scada>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("SCADAConnectionString")));
 
 
 var app = builder.Build();

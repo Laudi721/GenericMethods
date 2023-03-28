@@ -21,9 +21,9 @@ builder.Services.AddSwaggerGen();
 
 //var connectionString = builder.Configuration.GetConnectionString("SCADAConnectionString");
 //builder.Services.AddDbContext<SCADA>(options => options.UseSqlite(connectionString));
-builder.Services.AddDbContext<SCADA>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("SCADAConnectionString")));
+builder.Services.AddDbContext<Scada>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("ScadaConnectionString")));
 builder.Services.AddScoped<AdminSeeder>();
-builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
 
 //Authentication
 var authenticationSettings = new AuthenticationSettings();

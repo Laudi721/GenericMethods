@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dtos", "Dtos\Dtos.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErrorHandling", "Exceptions\ErrorHandling.csproj", "{DB1F9211-AFCD-44B5-8D53-EE823A1797F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{8A4ED2FD-D704-44F2-A55F-2CEED91DCF92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{DB1F9211-AFCD-44B5-8D53-EE823A1797F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB1F9211-AFCD-44B5-8D53-EE823A1797F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB1F9211-AFCD-44B5-8D53-EE823A1797F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A4ED2FD-D704-44F2-A55F-2CEED91DCF92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A4ED2FD-D704-44F2-A55F-2CEED91DCF92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A4ED2FD-D704-44F2-A55F-2CEED91DCF92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A4ED2FD-D704-44F2-A55F-2CEED91DCF92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
