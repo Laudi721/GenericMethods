@@ -9,6 +9,8 @@ using Office.Services;
 using Office.Authentication;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,6 +27,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<SCADADbContext>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("SCADAConnectionString")));
 builder.Services.AddScoped<AdminSeeder>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddCors(ops =>
+{
+    ops.AddDefaultPolicy(build =>
+    {
+        build.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 //Authentication
 var authenticationSettings = new AuthenticationSettings();
@@ -60,6 +71,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
 app.UseAuthentication();
 app.UseHttpsRedirection();
 

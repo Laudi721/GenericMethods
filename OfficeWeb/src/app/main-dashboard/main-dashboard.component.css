@@ -1,0 +1,23 @@
+.mat-toolbar{
+    color: #fff;
+    background-color: #226d1f;
+    margin: auto;
+    border-radius: 3px;
+    font-size: xx-large;
+  }
+
+  .employees {
+    font-size: xx-large;
+    margin-top: 30px;
+    margin-left: 30px;
+    width: 300px;
+    height: 300px;
+    color: #226d1f;
+    background-color: #fff;
+    border: 0%;
+    border-radius: 5px;
+    border-color: #226d1f;
+    cursor: pointer;
+    text-align: center;    
+    border-width: 30px;
+  }

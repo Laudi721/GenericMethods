@@ -1,14 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-login',
-//   templateUrl: './login.component.html',
-//   styleUrls: ['./login.component.css']
-// })
-// export class LoginComponent {
-
-// }
-
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -18,23 +7,18 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
+  username = '';
+  password = '';
 
   constructor(private http: HttpClient) {}
-
 
   onSubmit() {
     console.log(`Użytkownik ${this.username} próbuje się zalogować.`);
     // kod autentykacji użytkownika
     const endpoint = "http://localhost:5067/login";
+    const loginDto = (this.username, this.password);
 
-    const user = {
-      username: this.username,
-      password: this.password
-    };
-
-    this.http.post(endpoint, user).subscribe(response => {
+    this.http.post(endpoint, loginDto).subscribe(response => {
       console.log(response); // odpowiedź z serwera
     }, error => {
       console.error(error); // błąd podczas wywołania endpointu

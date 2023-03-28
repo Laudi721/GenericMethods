@@ -35,7 +35,7 @@ namespace Office.Services
         {
             var user = Context.Set<User>()
                 .Include(a => a.Role)
-                .FirstOrDefault(a => a.Login == loginDto.Login);
+                .FirstOrDefault(a => a.Login == loginDto.UserName);
 
             if (user == null)
                 throw new BadRequestException("Niepoprawny login lub hasło");
@@ -66,7 +66,7 @@ namespace Office.Services
         public bool CheckUser(LoginDto loginDto)
         {
             var user = Context.Set<User>()
-                .FirstOrDefault(a => a.Login == loginDto.Login && !a.IsDeleted);
+                .FirstOrDefault(a => a.Login == loginDto.UserName && !a.IsDeleted);
 
             if(user == null)
                 return false;
