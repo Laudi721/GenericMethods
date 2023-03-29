@@ -88,10 +88,10 @@ void DependencyInjection(WebApplicationBuilder builder)
 {
     builder.Services.AddScoped<IAccountService, AccountService>();
     builder.Services.AddSingleton(authenticationSettings);
-    //builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-    //builder.Services.AddScoped<IGenericService<Employee, EmployeeDto>, EmployeeService>();
-    //builder.Services.AddScoped<IRoleService, RoleService>();
-    //builder.Services.AddScoped<IGenericService<Role, RoleDto>, RoleService>();
-    builder.Services.AddScoped<IGenericService<Role, RoleDto>>(x => x.GetRequiredService<IRoleService>());
-    builder.Services.AddScoped<IGenericService<Employee, EmployeeDto>>(a => a.GetRequiredService<IEmployeeService>());
+    builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+    builder.Services.AddScoped<IGenericService<EmployeeDto>, EmployeeService>();
+    builder.Services.AddScoped<IRoleService, RoleService>();
+    builder.Services.AddScoped<IGenericService<RoleDto>, RoleService>();
+    //builder.Services.AddScoped<IGenericService<RoleDto>>(x => x.GetRequiredService<IRoleService>());
+    //builder.Services.AddScoped<IGenericService<EmployeeDto>>(a => a.GetRequiredService<IEmployeeService>());
 }

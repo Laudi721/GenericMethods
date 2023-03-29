@@ -1,14 +1,11 @@
-﻿using AutoMapper;
-using Database;
+﻿using Database;
 using Database.Models;
 using Dtos.Dtos;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Office.Interfaces;
 using Office.Services.Generic;
-using System.Data.Entity;
-using System.Runtime.InteropServices;
 
 namespace Office.Services
 {
@@ -35,32 +32,6 @@ namespace Office.Services
             {
                 return false;
             }
-        }
-
-        public IQueryable<EmployeeDto> Get()
-        {
-            var employees = Context.Set<Employee>()
-                .Include(a => a.Role)
-                .Where(a => a.Id != 1 && !a.IsDeleted)
-                .ToList();
-
-            var result = employees.Select(a => new EmployeeDto
-            {
-                Id = a.Id, 
-                Name = a.Name,
-                Surname = a.Surname,
-                Login = a.Login,
-                Password = a.Password,
-                Role = new RoleDto
-                {
-                    Id = a.Role.Id, 
-                    Name = a.Role.Name
-                },
-                Fired = a.Fired,
-                Hired = a.Hired
-            }).AsQueryable();
-
-            return result;
         }
 
         public bool Post([FromBody] EmployeeDto employeeDto)
@@ -118,9 +89,36 @@ namespace Office.Services
                 Login = model.Login,
                 Surname = model.Surname,
                 Password = model.Password,
+                Role = new RoleDto
+                {
+                    Id = model.RoleId,
+                    Name = model.Role.Name,
+                }
             }).ToList();
 
             dtos.AddRange(result);
+        }
+
+        public override Employee PostRequest(EmployeeDto item)
+        {
+            // do napisania
+            //var model = Activator.CreateInstance(typeof(Model)) as Model;
+            var model = new Employee();
+
+            model.Login = item.Login;
+            model.Password = item.Password;
+            model.Name = item.Name;
+            model.Surname= item.Surname;
+            model.Hired = item.Hired;
+
+            return model;
+        }
+
+        protected override List<Employee> PreparedQuery()
+        {
+            return Context.Set<Employee>()
+                .Include(a => a.Role)
+                .ToList();
         }
     }
 }

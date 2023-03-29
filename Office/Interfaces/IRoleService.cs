@@ -4,7 +4,7 @@ using Office.Interfaces.Generic;
 
 namespace Office.Interfaces
 {
-    public interface IRoleService : IGenericService<Role, RoleDto>
+    public interface IRoleService : IGenericService<RoleDto>
     {
     }
 }

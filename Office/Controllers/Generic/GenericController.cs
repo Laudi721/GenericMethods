@@ -5,27 +5,27 @@ using Office.Interfaces.Generic;
 namespace Office.Controllers.Generic
 {
     [ApiController,Route("[controller]")]
-    public abstract class GenericController<TModel, TDto> : ControllerBase
+    public abstract class GenericController<ModelDto> : ControllerBase
     {
-        private readonly IGenericService<TModel, TDto> _service;
+        private readonly IGenericService<ModelDto> _service;
 
-        public GenericController(IGenericService<TModel, TDto> service)
+        public GenericController(IGenericService<ModelDto> service)
         {
             _service = service;
         }
 
         [HttpGet, Route("GetAsync")]
-        public virtual async Task<ActionResult<IQueryable<TDto>>> GetAsync()
+        public virtual async Task<IQueryable<ModelDto>> GetAsync()
         {
             var result = await _service.GetAsync();
 
-            return Ok(result);
+            return await _service.GetAsync();
         }
 
         [HttpPost, Route("PostAsync")]
-        public virtual async Task<ActionResult<TDto>> PostAsync([FromBody] TDto dto)
+        public virtual async Task<ActionResult> PostAsync([FromBody] ModelDto dto)
         {
-            var result = _service.PostAsync(dto);
+            var result = await _service.PostAsync(dto);
 
             if (result)
                 return Ok();

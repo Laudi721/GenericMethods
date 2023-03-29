@@ -2,11 +2,10 @@
 
 namespace Office.Interfaces.Generic
 {
-    public interface IGenericService<TModel, TDto> 
+    public interface IGenericService<ModelDto> 
     {
-        //abstract Task<IQueryable<TDto>> GetAsync(TModel model, TDto dto);
-        Task<List<TDto>> GetAsync();
+        Task<IQueryable<ModelDto>> GetAsync();
 
-        bool PostAsync([FromBody] TDto dto);
+        Task<bool> PostAsync([FromBody] ModelDto dto);
     }
 }

@@ -19,7 +19,7 @@ namespace Office.Controllers
 
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginDto loginDto)
-        {
+        { 
             var token = _accountService.GenerateJwt(loginDto);
 
             if (token == null)

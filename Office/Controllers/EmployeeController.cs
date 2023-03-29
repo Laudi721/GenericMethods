@@ -10,7 +10,7 @@ namespace Office.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EmployeeController : GenericController<Employee, EmployeeDto>
+    public class EmployeeController : GenericController<EmployeeDto>
     {
         private readonly IEmployeeService _employeeService;
         //public EmployeeController(IEmployeeService employeeService)
@@ -18,22 +18,22 @@ namespace Office.Controllers
         //    _employeeService = employeeService;
         //}
 
-        public EmployeeController(IGenericService<Employee, EmployeeDto> service, IEmployeeService employeeService)
+        public EmployeeController(IGenericService<EmployeeDto> service, IEmployeeService employeeService)
     : base(service)
         {
             _employeeService = employeeService;
         }
 
-        public override async Task<ActionResult<IQueryable<EmployeeDto>>> GetAsync()
+        public override async Task<IQueryable<EmployeeDto>> GetAsync()
         {
             var result = await _employeeService.GetAsync();
 
-            return Ok(result);
+            return result;
         }
 
-        public override async Task<ActionResult<EmployeeDto>> PostAsync([FromBody] EmployeeDto dto)
+        public override async Task<ActionResult> PostAsync([FromBody] EmployeeDto dto)
         {
-            if(_employeeService.Post(dto))
+            if(await _employeeService.PostAsync(dto))
                 return Ok();
             else
                 return BadRequest();

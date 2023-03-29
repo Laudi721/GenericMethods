@@ -7,47 +7,65 @@ using System.Reflection;
 
 namespace Office.Services.Generic
 {
-    public abstract class GenericService<TModel, TDto> : IGenericService<TModel, TDto>  where TModel : class 
+    public abstract class GenericService<Model, ModelDto> : IGenericService<ModelDto>  where Model : class 
     {
         protected readonly Scada Context;
+        private readonly Dictionary<Type, List<PropertyInfo>> typePropertyCache;
 
         public GenericService(Scada context)
         {
             Context = context;
+            typePropertyCache = new Dictionary<Type, List<PropertyInfo>>();
         }
 
-        public virtual async Task<List<TDto>> GetAsync()
+        public virtual async Task<IQueryable<ModelDto>> GetAsync()
         {
-            var models = await Context.Set<TModel>().ToListAsync();
+            var query = PreparedQuery();
 
-            var result = new List<TDto>();
+            var result = new List<ModelDto>();
 
-            CustomGetMapping(models, result);
+            CustomGetMapping(query, result);
 
-            return result;
+            return result.AsQueryable();
         }
 
-        public virtual bool PostAsync([FromBody] TDto dto)
+        public virtual async Task<bool> PostAsync([FromBody] ModelDto item)
         {
-            var model = Context.Set<TModel>()
-                .Find(dto);
+            //var model = Context.Set<Model>();
 
-            if (model != null)
-                return false;
+            var model = PostRequest(item);
 
-            var newModel = typeof(TModel);
+            Context.Set<Model>().Add(model);
+            try
+            {
+                await Context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             return true;
         }
 
-        protected virtual void CustomGetMapping(List<TModel> models, List<TDto> dto)
+        protected virtual void CustomGetMapping(List<Model> models, List<ModelDto> dto)
         {
-            foreach (var model in models)
-            {
-                var obj = typeof(TDto);
-
-
-            }
+            // do napisania
         }
+
+        public virtual Model PostRequest(ModelDto item)
+        {
+            // do napisania
+            var model = Activator.CreateInstance(typeof(Model)) as Model;
+
+            return model;
+        }
+
+        protected virtual List<Model> PreparedQuery()
+        {
+            return Context.Set<Model>().ToList();
+        }
+
+
     }
 }

@@ -6,14 +6,14 @@ using Office.Interfaces.Generic;
 
 namespace Office.Interfaces
 {
-    public interface IEmployeeService : IGenericService<Employee, EmployeeDto>
+    public interface IEmployeeService : IGenericService<EmployeeDto>
     {
-        public IQueryable<EmployeeDto> Get();
+        //public IQueryable<EmployeeDto> Get();
 
-        public bool Post([FromBody] EmployeeDto employeeDto);
+        //public bool Post([FromBody] EmployeeDto employeeDto);
 
-        public bool Delete(int id);
+        //public bool Delete(int id);
 
-        public bool Put([FromBody] EmployeeDto employeeDto);
+        //public bool Put([FromBody] EmployeeDto employeeDto);
     }
 }
