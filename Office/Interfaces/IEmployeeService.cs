@@ -1,7 +1,4 @@
-﻿using Database.Models;
-using Dtos.Dtos;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Dtos.Dtos;
 using Office.Interfaces.Generic;
 
 namespace Office.Interfaces

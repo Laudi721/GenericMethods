@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Database.Scada\Database.Scada.csproj" />
     <ProjectReference Include="..\Dtos\Dtos.csproj" />
     <ProjectReference Include="..\Exceptions\ErrorHandling.csproj" />
   </ItemGroup>

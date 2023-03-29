@@ -1,5 +1,4 @@
-﻿using Database.Models;
-using Dtos.Dtos;
+﻿using Dtos.Dtos;
 using Office.Interfaces.Generic;
 
 namespace Office.Interfaces

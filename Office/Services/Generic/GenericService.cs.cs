@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Database;
+﻿using Database.Scada;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Office.Interfaces.Generic;
 using System.Reflection;
 
@@ -9,10 +7,10 @@ namespace Office.Services.Generic
 {
     public abstract class GenericService<Model, ModelDto> : IGenericService<ModelDto>  where Model : class 
     {
-        protected readonly Scada Context;
+        protected readonly ScadaDbContext Context;
         private readonly Dictionary<Type, List<PropertyInfo>> typePropertyCache;
 
-        public GenericService(Scada context)
+        public GenericService(ScadaDbContext context)
         {
             Context = context;
             typePropertyCache = new Dictionary<Type, List<PropertyInfo>>();
@@ -40,9 +38,9 @@ namespace Office.Services.Generic
             {
                 await Context.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception(e.ToString());
             }
 
             return true;
@@ -66,6 +64,12 @@ namespace Office.Services.Generic
             return Context.Set<Model>().ToList();
         }
 
+        protected virtual Model MapDtoToModel(ModelDto item)
+        {
+            // do napisania
+            var model = Activator.CreateInstance(typeof(Model)) as Model;
 
+            return model;
+        }
     }
 }

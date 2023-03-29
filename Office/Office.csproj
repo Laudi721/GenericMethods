@@ -18,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Base\Base.csproj" />
+    <ProjectReference Include="..\Database.Scada\Database.Scada.csproj" />
     <ProjectReference Include="..\Dtos\Dtos.csproj" />
     <ProjectReference Include="..\Exceptions\ErrorHandling.csproj" />
   </ItemGroup>

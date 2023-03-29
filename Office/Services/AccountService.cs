@@ -1,18 +1,15 @@
-﻿using Database;
-using Database.Models;
+﻿using Database.Scada;
+using Database.Scada.Models;
 using Dtos.Dtos;
 using ErrorHandling.Exceptions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Office.Authentication;
 using Office.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Office.Services
 {
@@ -21,7 +18,7 @@ namespace Office.Services
         private readonly IPasswordHasher<Employee> _passwordHasher;
         private readonly AuthenticationSettings _authenticationSettings;
 
-        public AccountService(Scada context, IPasswordHasher<Employee> passwordHasher, AuthenticationSettings authenticationSettings) : base(context)
+        public AccountService(ScadaDbContext context, IPasswordHasher<Employee> passwordHasher, AuthenticationSettings authenticationSettings) : base(context)
         {
             _passwordHasher = passwordHasher;
             _authenticationSettings = authenticationSettings;

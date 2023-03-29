@@ -1,8 +1,5 @@
 
 using Microsoft.EntityFrameworkCore;
-using Database;
-using Database.Seeders;
-using Database.Models;
 using Microsoft.AspNetCore.Identity;
 using Office.Interfaces;
 using Office.Services;
@@ -10,9 +7,10 @@ using Office.Authentication;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Office.Interfaces.Generic;
-using Office.Controllers.Generic;
-using Office.Services.Generic;
 using Dtos.Dtos;
+using Database.Scada;
+using Database.Scada.Seeders;
+using Database.Scada.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +21,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//var connectionString = builder.Configuration.GetConnectionString("SCADAConnectionString");
-//builder.Services.AddDbContext<SCADA>(options => options.UseSqlite(connectionString));
-builder.Services.AddDbContext<Scada>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("ScadaConnectionString")));
+var connectionString = builder.Configuration.GetConnectionString("ScadaConnectionString");
+builder.Services.AddDbContext<ScadaDbContext>(options => options.UseSqlServer(connectionString));
+//builder.Services.AddDbContext<Scada>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("ScadaConnectionString")));
 builder.Services.AddScoped<AdminSeeder>();
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
