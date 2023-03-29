@@ -41,7 +41,7 @@ namespace Office.Services
                 throw new BadRequestException("Niepoprawny login lub hasło");
             }
 
-            var result = _passwordHasher.VerifyHashedPassword(employee, employee.Password, loginDto.Password);
+            var result = Base.StaticMethod.HashHelper.VerifyPassword(employee, loginDto.Password);
 
             if(result == PasswordVerificationResult.Failed)
                 throw new BadRequestException("Niepoprawny login lub hasło");

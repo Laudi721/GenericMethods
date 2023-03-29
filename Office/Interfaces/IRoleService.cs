@@ -1,5 +1,5 @@
-﻿using Dtos.Dtos;
-using Office.Interfaces.Generic;
+﻿using Base.Interfaces;
+using Dtos.Dtos;
 
 namespace Office.Interfaces
 {

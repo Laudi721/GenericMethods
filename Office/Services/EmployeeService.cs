@@ -1,20 +1,20 @@
-﻿using Database.Scada;
+﻿using Base.Services;
+using Database.Scada;
 using Database.Scada.Models;
 using Dtos.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Office.Interfaces;
-using Office.Services.Generic;
 
 namespace Office.Services
 {
     public class EmployeeService : GenericService<Employee, EmployeeDto>, IEmployeeService
     {
-        private readonly IPasswordHasher<EmployeeDto> _passwordHasher;
-        public EmployeeService(ScadaDbContext context, IPasswordHasher<EmployeeDto> passwordHasher) : base(context)
+        //private readonly IPasswordHasher<EmployeeDto> _passwordHasher;
+        public EmployeeService(ScadaDbContext context) : base(context)
         {
-            _passwordHasher = passwordHasher;
+            //_passwordHasher = passwordHasher;
         }
 
         public bool Delete(int id)
@@ -33,29 +33,6 @@ namespace Office.Services
                 return false;
             }
         }
-
-        //public bool Post([FromBody] EmployeeDto employeeDto)
-        //{
-        //    var employee = Context.Set<Employee>()
-        //        .FirstOrDefault(a => a.Login == employeeDto.Login);
-
-        //    if(employee != null)
-        //        return false;
-
-        //    var employeeModel = CreateModelObject(employeeDto);
-
-        //    try
-        //    {
-        //        Context.Add(employeeModel);
-        //        Context.SaveChanges();
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return false;
-        //        throw new Exception($"Nieudana próba zapisu nowego pracownika o loginie {nameof(employeeDto.Login)} do bazy danych.");
-        //    }
-        //}
 
         public override async Task<bool> PostAsync([FromBody] EmployeeDto item)
         {
@@ -87,22 +64,22 @@ namespace Office.Services
             throw new NotImplementedException();
         }
 
-        public Employee CreateModelObject(EmployeeDto employeeDto)
-        {
-            var model = new Employee();
+        //public Employee CreateModelObject(EmployeeDto employeeDto)
+        //{
+        //    var model = new Employee();
 
-            var password = _passwordHasher.HashPassword(employeeDto, employeeDto.Password);
+        //    var password = _passwordHasher.HashPassword(employeeDto, employeeDto.Password);
 
-            model.Login = employeeDto.Login;
-            model.Password = password;
-            model.Name = employeeDto.Name;
-            model.Surname = employeeDto.Surname;
-            model.RoleId = employeeDto.Role.Id;
-            model.Hired = employeeDto.Hired;
-            model.Fired = employeeDto.Fired;
+        //    model.Login = employeeDto.Login;
+        //    model.Password = password;
+        //    model.Name = employeeDto.Name;
+        //    model.Surname = employeeDto.Surname;
+        //    model.RoleId = employeeDto.Role.Id;
+        //    model.Hired = employeeDto.Hired;
+        //    model.Fired = employeeDto.Fired;
 
-            return model;
-        }
+        //    return model;
+        //}
 
         protected override void CustomGetMapping(List<Employee> models, List<EmployeeDto> dtos)
         {
@@ -125,15 +102,6 @@ namespace Office.Services
 
         public override Employee PostRequest(EmployeeDto item)
         {
-            // do napisania
-            //var model = Activator.CreateInstance(typeof(Model)) as Model;
-            //var model = new Employee();
-
-            //model.Login = item.Login;
-            //model.Name = item.Name;
-            //model.Surname= item.Surname;
-            //model.Hired = item.Hired;
-            //model.Role = MapDtoToModel(item.Role);
             var model = new Employee
             {
                 Login = item.Login,
@@ -141,10 +109,9 @@ namespace Office.Services
                 Surname = item.Surname,
                 Hired = item.Hired,
                 Role = MapDtoToModel(item.Role),
-                Password = item.Password
             };
 
-            model.Password = Base.StaticMethod.HashHelper.HashPassword(item.Password);
+            model.Password = Base.StaticMethod.HashHelper.HashPassword(model, item.Password);
 
             return model;
         }

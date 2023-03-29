@@ -2,47 +2,29 @@
 using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Base.StaticMethod
 {
     public static class HashHelper
     {
-        public static readonly IPasswordHasher<Employee> _passwordHasher;
+        private static readonly IPasswordHasher<Employee> _passwordHasher;
 
-        //public static string HashPassword(string password)
-        //{
-        //    byte[] salt;
-        //    byte[] buffer2;
-        //    if (password == null)
-        //    {
-        //        throw new ArgumentNullException("password");
-        //    }
-        //    using (Rfc2898DeriveBytes bytes = new Rfc2898DeriveBytes(password, 0x10, 0x3e8))
-        //    {
-        //        salt = bytes.Salt;
-        //        buffer2 = bytes.GetBytes(0x20);
-        //    }
-        //    byte[] dst = new byte[0x31];
-        //    Buffer.BlockCopy(salt, 0, dst, 1, 0x10);
-        //    Buffer.BlockCopy(buffer2, 0, dst, 0x11, 0x20);
-        //    return Convert.ToBase64String(dst);
-        //}
-
-        public static string HashPassword(string password)
+        static HashHelper()
         {
-            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+            _passwordHasher = new PasswordHasher<Employee>();
+        }
 
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                byte[] hashedBytes = sha256Hash.ComputeHash(passwordBytes);
+        public static string HashPassword(Employee employee, string password)
+        {
+            return _passwordHasher.HashPassword(employee, password);
+        }
 
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < hashedBytes.Length; i++)
-                {
-                    builder.Append(hashedBytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
+        public static PasswordVerificationResult VerifyPassword(Employee employee, string password)
+        {
+            var result = _passwordHasher.VerifyHashedPassword(employee, employee.Password, password);
+
+            return result;
         }
     }
 }

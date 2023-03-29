@@ -1,11 +1,16 @@
-﻿using Database.Scada;
+﻿using Base.Interfaces;
+using Database.Scada;
 using Microsoft.AspNetCore.Mvc;
-using Office.Interfaces.Generic;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Office.Services.Generic
+namespace Base.Services
 {
-    public abstract class GenericService<Model, ModelDto> : IGenericService<ModelDto>  where Model : class 
+    public abstract class GenericService<Model, ModelDto> : IGenericService<ModelDto> where Model : class
     {
         protected readonly ScadaDbContext Context;
         private readonly Dictionary<Type, List<PropertyInfo>> typePropertyCache;

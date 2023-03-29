@@ -1,6 +1,6 @@
-﻿using Dtos.Dtos;
-using Office.Controllers.Generic;
-using Office.Interfaces.Generic;
+﻿using Base.Controllers;
+using Base.Interfaces;
+using Dtos.Dtos;
 using Office.Interfaces;
 
 namespace Office.Controllers

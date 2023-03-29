@@ -6,11 +6,11 @@ using Office.Services;
 using Office.Authentication;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using Office.Interfaces.Generic;
 using Dtos.Dtos;
 using Database.Scada;
 using Database.Scada.Seeders;
 using Database.Scada.Models;
+using Base.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,9 +25,9 @@ var connectionString = builder.Configuration.GetConnectionString("ScadaConnectio
 builder.Services.AddDbContext<ScadaDbContext>(options => options.UseSqlServer(connectionString));
 //builder.Services.AddDbContext<Scada>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("ScadaConnectionString")));
 builder.Services.AddScoped<AdminSeeder>();
-builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
-builder.Services.AddScoped<IPasswordHasher<EmployeeDto>, PasswordHasher<EmployeeDto>>();
+//builder.Services.AddScoped<EmployeeService>();
+//builder.Services.AddScoped<IPasswordHasher<EmployeeDto>, PasswordHasher<EmployeeDto>>();
 
 //Authentication
 var authenticationSettings = new AuthenticationSettings();

@@ -1,5 +1,5 @@
-﻿using Dtos.Dtos;
-using Office.Interfaces.Generic;
+﻿using Base.Interfaces;
+using Dtos.Dtos;
 
 namespace Office.Interfaces
 {
@@ -11,6 +11,7 @@ namespace Office.Interfaces
 
         //public bool Delete(int id);
 
-        //public bool Put([FromBody] EmployeeDto employeeDto);
+        ////public bool Put([FromBody] EmployeeDto employeeDto);
+        //Task GetAsync();
     }
 }

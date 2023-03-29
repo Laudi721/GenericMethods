@@ -1,8 +1,8 @@
-﻿using Database.Scada;
+﻿using Base.Services;
+using Database.Scada;
 using Database.Scada.Models;
 using Dtos.Dtos;
 using Office.Interfaces;
-using Office.Services.Generic;
 
 namespace Office.Services
 {

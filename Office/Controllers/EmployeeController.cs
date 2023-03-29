@@ -1,8 +1,8 @@
-﻿using Dtos.Dtos;
+﻿using Base.Controllers;
+using Base.Interfaces;
+using Dtos.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Office.Controllers.Generic;
 using Office.Interfaces;
-using Office.Interfaces.Generic;
 
 namespace Office.Controllers
 {
@@ -22,19 +22,19 @@ namespace Office.Controllers
             _employeeService = employeeService;
         }
 
-        public override async Task<IQueryable<EmployeeDto>> GetAsync()
-        {
-            var result = await _employeeService.GetAsync();
+        //public override async Task<IQueryable<EmployeeDto>> GetAsync()
+        //{
+        //    var result = await _employeeService.GetAsync();
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public override async Task<ActionResult> PostAsync([FromBody] EmployeeDto dto)
-        {
-            if(await _employeeService.PostAsync(dto))
-                return Ok();
-            else
-                return BadRequest();
-        }
+        //public override async Task<ActionResult> PostAsync([FromBody] EmployeeDto dto)
+        //{
+        //    if(await _employeeService.PostAsync(dto))
+        //        return Ok();
+        //    else
+        //        return BadRequest();
+        //}
     }
 }
