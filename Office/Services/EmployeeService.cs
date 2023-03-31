@@ -90,31 +90,31 @@ namespace Office.Services
                 Login = model.Login,
                 Surname = model.Surname,
                 Password = model.Password,
-                Role = new RoleDto
-                {
-                    Id = model.RoleId,
-                    Name = model.Role.Name,
-                }
+                //Role = new RoleDto
+                //{
+                //    Id = model.RoleId,
+                //    Name = model.Role.Name,
+                //}
             }).ToList();
 
             dtos.AddRange(result);
         }
 
-        public override Employee PostRequest(EmployeeDto item)
-        {
-            var model = new Employee
-            {
-                Login = item.Login,
-                Name = item.Name,
-                Surname = item.Surname,
-                Hired = item.Hired,
-                Role = MapDtoToModel(item.Role),
-            };
+        //public override Employee PostRequest(EmployeeDto item)
+        //{
+        //    var model = new Employee
+        //    {
+        //        Login = item.Login,
+        //        Name = item.Name,
+        //        Surname = item.Surname,
+        //        Hired = item.Hired,
+        //        Role = MapDtoToModel(item.Role),
+        //    };
 
-            model.Password = Base.StaticMethod.HashHelper.HashPassword(model, item.Password);
+        //    model.Password = Base.StaticMethod.HashHelper.HashPassword(model, item.Password);
 
-            return model;
-        }
+        //    return model;
+        //}
 
         protected override List<Employee> PreparedQuery()
         {

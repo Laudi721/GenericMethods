@@ -23,14 +23,14 @@ namespace Office.Services
             dto.AddRange(result);
         }
 
-        public override Role PostRequest(RoleDto item)
-        {
-            // do napisania
-            var model = Activator.CreateInstance(typeof(Role)) as Role;
+        //public override Role PostRequest(RoleDto item)
+        //{
+        //    // do napisania
+        //    var model = Activator.CreateInstance(typeof(Role)) as Role;
 
-            model.Name = item.Name;
+        //    model.Name = item.Name;
 
-            return model;
-        }
+        //    return model;
+        //}
     }
 }

@@ -18,22 +18,63 @@ namespace Base.Controllers
             _service = service;
         }
 
-        [HttpGet, Route("GetAsync")]
-        public virtual async Task<IQueryable<ModelDto>> GetAsync()
+        /// <summary>
+        /// Glowny endpoint Get
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Route("Get")]
+        public virtual async Task<IQueryable<ModelDto>> Get()
         {
             var result = await _service.GetAsync();
 
             return await _service.GetAsync();
         }
 
-        [HttpPost, Route("PostAsync")]
-        public virtual async Task<ActionResult> PostAsync([FromBody] ModelDto dto)
+        /// <summary>
+        /// Glowny endpoint Post
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        [HttpPost, Route("Post")]
+        public virtual async Task<ActionResult> Post([FromBody] ModelDto item)
         {
-            var result = await _service.PostAsync(dto);
+            var result = await _service.PostAsync(item);
 
             if (result)
                 return Ok();
             else
+                return BadRequest();
+        }
+
+        /// <summary>
+        /// Glowny endpoint Delete
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        [HttpPost, Route("Delete")]
+        public virtual async Task<ActionResult> Delete([FromBody] ModelDto item)
+        {
+            var result = await _service.DeleteAsync(item);
+
+            if(result)
+                return Ok();
+            else
+                return BadRequest();
+        }
+
+        /// <summary>
+        /// Glowny endpoint Put
+        /// </summary>
+        /// <param name="update"></param>
+        /// <returns></returns>
+        [HttpPost, Route("Async")]
+        public virtual async Task<ActionResult> Put([FromBody] ModelDto update)
+        {
+            var result = await _service.PutAsync(update);
+
+            if(result)
+                return Ok();
+            else 
                 return BadRequest();
         }
     }
