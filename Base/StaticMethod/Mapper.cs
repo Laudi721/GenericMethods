@@ -1,41 +1,40 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Base.StaticMethod
 {
-    public static class Mapper
+    public static class Mapper<ModelDto, Model>
     {
-        public static TTarget Map<TSource, TTarget>(TSource source) where TTarget : new()
+      public static Model Map<ModelDto, Model>(ModelDto dto) where Model : new()
         {
-            var target = new TTarget();
 
-            foreach (var sourceProperty in typeof(TSource).GetProperties())
+            // do przebudowy
+            var model = Activator.CreateInstance<Model>();
+
+            foreach(var propertyInfo in model.GetType().GetProperties())
             {
-                var targetProperty = typeof(TTarget).GetProperty(sourceProperty.Name);
-                if (targetProperty != null && targetProperty.CanWrite)
+                var value = propertyInfo.GetValue(dto);
+
+                if (value is int || value is string || value is DateTime)
                 {
-                    var sourceValue = sourceProperty.GetValue(source);
-                    if (sourceValue != null)
-                    {
-                        if (sourceProperty.PropertyType.Namespace == typeof(TSource).Namespace)
-                        {
-                            var nestedTarget = Activator.CreateInstance(targetProperty.PropertyType);
-                            var nestedSource = sourceValue;
-                            var nestedTargetMapped = Map<object, object>(nestedSource);
-                            targetProperty.SetValue(target, nestedTargetMapped);
-                        }
-                        else
-                        {
-                            targetProperty.SetValue(target, sourceValue);
-                        }
-                    }
+                    typeof(Model).GetProperty(propertyInfo?.Name)?.SetValue(model, value);
+                }
+                else
+                {
+                    var innerModel = typeof(Model).GetProperty(propertyInfo.Name)?.GetValue(model);
+                    if(innerModel == null)
+                        innerModel = Activator.CreateInstance(propertyInfo.PropertyType);
+
+                    //typeof(Model).GetProperty(propertyInfo.Name)?.SetValue(model, Map<object, object>((dynamic) value, innerModel));
                 }
             }
 
-            return target;
+            return model;
         }
 
     }

@@ -164,9 +164,6 @@ namespace Base.Services
             var itemProperties = item.GetType().GetProperties().ToList();
 
 
-            var ss = Base.StaticMethod.Mapper.Map<ModelDto, Model>(item);
-
-
             return model;
         }
 
