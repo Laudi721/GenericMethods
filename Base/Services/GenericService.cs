@@ -1,23 +1,17 @@
-﻿using AutoMapper;
-using Base.Interfaces;
+﻿using Base.Interfaces;
 using Database.Scada;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Base.Services
 {
     public abstract class GenericService<Model, ModelDto> : IGenericService<ModelDto> where Model : class
     {
         protected readonly ScadaDbContext Context;
-        private readonly IMapper _mapper;
 
         public GenericService(ScadaDbContext context)
         {
             Context = context;
-        }
-        public GenericService(IMapper mapper)
-        {
-            _mapper = mapper;
         }
 
         /// <summary>
@@ -156,15 +150,37 @@ namespace Base.Services
         /// <param name="item"></param>
         /// <returns></returns>
         public virtual Model PostRequest(ModelDto item)
-        {
+        { 
             // do napisania
             var model = Activator.CreateInstance(typeof(Model)) as Model;
 
-            var modelProperties = model.GetType().GetProperties().ToList();
-            var itemProperties = item.GetType().GetProperties().ToList();
+            var ds = StaticMethod.Mapper.Map<Model>(item, model);
 
+            //var ss = item.GetType().GetProperties().ToList();
 
-            return model;
+            //foreach (var property in item.GetType().GetProperties())
+            //{
+            //    var sourceValue = property.GetValue(item);
+            //    var targetValue = model.GetType().GetProperty(property.Name);
+
+            //    var sourceValueType = property.PropertyType;
+            //    if (sourceValueType.IsValueType || sourceValueType == typeof(string))
+            //    {
+            //        var sourceValue2 = item.GetType().GetProperty(property.Name);
+            //        targetValue.SetValue(model, sourceValue);
+            //    }
+            //    else if (sourceValueType.IsGenericType) 
+            //    {
+            //        var dd = property.PropertyType.GetGenericArguments()[0].GetProperties();
+            //        var aa = targetValue.PropertyType.GetGenericArguments()[0].GetProperties();
+            //    }
+            //    else if (sourceValueType.IsClass)
+            //    {
+            //        var nestedSourceType = sourceValueType.GetNestedType(property.Name);
+            //    }
+            //}
+
+            return ds;
         }
 
         /// <summary>

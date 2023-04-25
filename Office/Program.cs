@@ -93,5 +93,4 @@ void DependencyInjection(WebApplicationBuilder builder)
     //builder.Services.AddScoped<IGenericService<RoleDto>>(x => x.GetRequiredService<IRoleService>());
     //builder.Services.AddScoped<IGenericService<EmployeeDto>>(a => a.GetRequiredService<IEmployeeService>());
 
-    builder.Services.AddAutoMapper(typeof(Program).Assembly);
 }
