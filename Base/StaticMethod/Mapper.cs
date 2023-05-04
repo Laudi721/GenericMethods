@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections;
+using System.Dynamic;
 using System.Reflection;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -8,180 +10,129 @@ namespace Base.StaticMethod
     public static class Mapper
     //public static class Mapper<ModelDto, Model>
     {
-        public static T Map<T>(object item, object model)
+        public static T Map<T>(object source, int mappingLevel = 1) where T : class
         {
-            var result = Activator.CreateInstance<T>();
+            return Map(source, typeof(T), mappingLevel) as T;
+        }
 
-            var ss = item.GetType().GetProperties().ToList();
+        public static object Map(object source, Type result, int mappingLevel = 1)
+        {
+            if (source == null)
+                return null;
 
-            foreach (var property in item.GetType().GetProperties())
+            var sourceType = source.GetType();
+
+            var resultProperties = GetTypeProperties(result);
+            var sourceProperties = GetTypeProperties(sourceType);
+
+            var resultObject = Activator.CreateInstance(result) as object;
+
+            foreach (var property in resultProperties)
             {
-                var sourceValue = property.GetValue(item);
-                var targetValue = model.GetType().GetProperty(property.Name);
+                var setter = SetterProperty(result, property.Name);
+                
+                if (setter == null)
+                    continue;
 
-                var sourceValueType = property.PropertyType;
-                if (sourceValueType.IsValueType || sourceValueType == typeof(string))
-                {
-                    var sourceValue2 = item.GetType().GetProperty(property.Name);
-                    targetValue.SetValue(result, sourceValue);
-                }
-                else if (sourceValueType.IsGenericType)
-                {
-                    var innerItem = property.PropertyType.GetGenericArguments()[0];
-                    var innerModel = targetValue.PropertyType.GetGenericArguments()[0];
+                if (!sourceProperties.Any(a => a.Name.Equals(property.Name)))
+                    continue;
 
-                    var listValues = new List<object>();
-                    foreach (var single in sourceValue as IList)
-                    {
-                        listValues.Add(SingleMapping(single, innerModel));
-                    }
+                var getter = GetterProperty(sourceType, property.Name);
 
-                    targetValue.SetValue(result, listValues);
-                }
-                else if (sourceValueType.IsClass)
-                {
-                    var innerItem = property.PropertyType.GetGenericArguments()[0];
-                    var innerModel = targetValue.PropertyType.GetGenericArguments()[0];
+                if (getter == null)
+                    continue;
 
-                    var value = SingleMapping(innerItem, innerModel);
-                }
+                var propertyType = property.PropertyType;
+
+                if (propertyType.IsSealed)
+                    HandleSimpleMapping(getter, setter, source, resultObject, propertyType);
+                else if (!propertyType.IsSealed && mappingLevel > 0)
+                    HandleModelMapping(getter, setter, source, resultObject, propertyType, mappingLevel - 1);
             }
 
-            return result;
+            return resultObject;
         }
 
-        private static object SingleMapping(object innerItem, Type innerModel)
+        private static void HandleSimpleMapping(PropertyInfo getter, PropertyInfo setter, object source, object destination, Type propertyType)
         {
-            var result = Activator.CreateInstance<object>();
-
-            //foreach(var property in innerModel.GetProperties())
-            //{
-            //    var sourceValue = innerItem.GetType().GetProperty(property.Name);
-            //    if(sourceValue == null)
-            //        continue;
-            //}
-
-            return result;
+            if (getter.PropertyType == propertyType && setter.CanWrite)
+            {
+                var value = getter.GetValue(source);
+                setter.SetValue(destination, value);
+            }
         }
-        //public static Model Map(object dto, object model, int mappingLevel)
+
+        private static void HandleModelMapping(PropertyInfo getter, PropertyInfo setter, object source, object destination, Type propertyType, int mappingLevel)
+        {
+            var sourceValue = getter.GetValue(source);
+            var resultValue = Activator.CreateInstance(propertyType).GetType();
+
+            if (sourceValue == null)
+            {
+                setter.SetValue(destination, null);
+                return;
+            }
+
+            var obj = Map(sourceValue, resultValue, mappingLevel - 1);
+
+            setter.SetValue(destination, obj);
+        }
+
+        private static PropertyInfo SetterProperty(Type type, string propertyName)
+        {
+            return type.GetProperty(propertyName);
+        }
+
+        private static PropertyInfo GetterProperty(Type type, string propertyName)
+        {
+            return type.GetProperty(propertyName);
+        }
+
+        public static List<PropertyInfo> GetTypeProperties(Type type)
+        {
+            return type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).ToList();
+        }
+
+        //public static T Map<T>(object item, object model)
         //{
-        //    var result = Activator.CreateInstance<Model>();
-        //    var propetries = dto.GetType().GetProperties().ToList();
+        //    var result = Activator.CreateInstance<T>();
 
-        //    foreach (var propertyInfo in dto.GetType().GetProperties())
+        //    var ss = item.GetType().GetProperties().ToList();
+
+        //    foreach (var property in item.GetType().GetProperties())
         //    {
-        //        var value = propertyInfo.GetValue(dto);
+        //        var sourceValue = property.GetValue(item);
+        //        var targetValue = model.GetType().GetProperty(property.Name);
 
-        //        if (!propertyInfo.PropertyType.IsSealed)
+        //        var sourceValueType = property.PropertyType;
+        //        if (sourceValueType.IsValueType || sourceValueType == typeof(string))
         //        {
-        //            object innerModel = typeof(Model).GetProperty(propertyInfo.Name);
-        //            object innerDto = propertyInfo.PropertyType;
-
-        //            value = Map(dto, innerDto, 1);
+        //            var sourceValue2 = item.GetType().GetProperty(property.Name);
+        //            targetValue.SetValue(result, sourceValue);
         //        }
-        //        else
+        //        else if (sourceValueType.IsGenericType)
         //        {
-        //            typeof(Model).GetProperty(propertyInfo.Name).SetValue(model, value);
+        //            var innerItem = property.PropertyType.GetGenericArguments()[0];
+        //            var innerModel = targetValue.PropertyType.GetGenericArguments()[0];
+
+        //            var listValues = new List<object>();
+        //            foreach (var single in sourceValue as IList)
+        //            {
+        //                listValues.Add(SingleMapping(single, innerModel));
+        //            }
+
+        //            targetValue.SetValue(result, listValues);
+        //        }
+        //        else if (sourceValueType.IsClass)
+        //        {
+        //            var innerItem = property.PropertyType;
+        //            var innerModel = targetValue.PropertyType;
+
+        //            var value = SingleMapping(innerItem, innerModel);
         //        }
         //    }
 
         //    return result;
         //}
-
-        //public static Model Map<Model>(object source) where Model : new()
-        //public static T Map<T>(object source) where T : new()
-        //{
-        //    var destination = new T();
-
-        //    foreach (var sourceProperty in source.GetType().GetProperties())
-        //    {
-        //        var destinationProperty = typeof(Model).GetProperty(sourceProperty.Name);
-
-        //        if (destinationProperty == null)
-        //        {
-        //            continue;
-        //        }
-
-        //        var sourceValue = sourceProperty.GetValue(source);
-        //        var destinationValueType = destinationProperty.PropertyType;
-
-        //        if (sourceValue == null || !destinationValueType.IsAssignableFrom(sourceProperty.PropertyType))
-        //        {
-        //            continue;
-        //        }
-
-        //        if (destinationValueType.IsPrimitive || destinationValueType == typeof(string))
-        //        {
-        //            destinationProperty.SetValue(destination, sourceValue);
-        //        }
-        //        else if (destinationValueType.IsClass)
-        //        {
-        //            var nestedDestination = Map<object>(sourceValue);
-        //            destinationProperty.SetValue(destination, nestedDestination);
-        //        }
-        //    }
-
-        //    return destination;
-        //}
-
-        //public static T Map<T>(object source, object destination) where T : class, new()
-        //{
-        //    var destination = Activator.CreateInstance<Model>();
-        //    //var destination = new T();
-
-        //    foreach (var sourceProperty in source.GetType().GetProperties())
-        //    {
-        //        var destinationProperty2 = destination.GetType().GetProperty(sourceProperty.Name);
-        //        //var destinationProperty = typeof(Model).GetProperty(sourceProperty.Name);
-        //        var destinationProperty = destination.GetType().GetProperty(sourceProperty.Name);
-
-        //        if (destinationProperty == null)
-        //        {
-        //            continue;
-        //        }
-
-        //        var sourceValue = sourceProperty.GetValue(source);
-        //        var destinationValueType = destinationProperty.PropertyType;
-
-        //        if(destinationValueType.IsValueType || destinationValueType == typeof(string))
-        //            destinationProperty.SetValue(destination, sourceValue);
-        //        else
-        //        {
-        //            var nestedDestination = Map(sourceValue, destinationProperty);
-        //            destinationProperty.SetValue(destination, nestedDestination);
-        //        }
-        //    }
-
-        //    return destination;
-        //}
-
-        //public static Model Map<ModelDto, Model>(ModelDto dto) where Model : new()
-        //{
-
-        //    // do przebudowy
-        //    var model = Activator.CreateInstance<Model>();
-
-        //    foreach(var propertyInfo in model.GetType().GetProperties())
-        //    {
-        //        var value = propertyInfo.GetValue(dto);
-
-        //        if (value is int || value is string || value is DateTime)
-        //        {
-        //            typeof(Model).GetProperty(propertyInfo?.Name)?.SetValue(model, value);
-        //        }
-        //        else
-        //        {
-        //            var innerModel = typeof(Model).GetProperty(propertyInfo.Name)?.GetValue(model);
-        //            if(innerModel == null)
-        //                innerModel = Activator.CreateInstance(propertyInfo.PropertyType);
-
-        //            //typeof(Model).GetProperty(propertyInfo.Name)?.SetValue(model, Map<object, object>((dynamic) value, innerModel));
-        //        }
-        //    }
-
-        //    return model;
-        //}
-
-
     }
 }

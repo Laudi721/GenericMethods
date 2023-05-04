@@ -1,7 +1,8 @@
 ﻿using Base.Interfaces;
 using Database.Scada;
-using Microsoft.AspNetCore.Mvc;
+//using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata;
+using System.Web.Http;
 
 namespace Base.Services
 {
@@ -151,36 +152,9 @@ namespace Base.Services
         /// <returns></returns>
         public virtual Model PostRequest(ModelDto item)
         { 
-            // do napisania
-            var model = Activator.CreateInstance(typeof(Model)) as Model;
+            var mappedItem = StaticMethod.Mapper.Map<Model>(item);
 
-            var ds = StaticMethod.Mapper.Map<Model>(item, model);
-
-            //var ss = item.GetType().GetProperties().ToList();
-
-            //foreach (var property in item.GetType().GetProperties())
-            //{
-            //    var sourceValue = property.GetValue(item);
-            //    var targetValue = model.GetType().GetProperty(property.Name);
-
-            //    var sourceValueType = property.PropertyType;
-            //    if (sourceValueType.IsValueType || sourceValueType == typeof(string))
-            //    {
-            //        var sourceValue2 = item.GetType().GetProperty(property.Name);
-            //        targetValue.SetValue(model, sourceValue);
-            //    }
-            //    else if (sourceValueType.IsGenericType) 
-            //    {
-            //        var dd = property.PropertyType.GetGenericArguments()[0].GetProperties();
-            //        var aa = targetValue.PropertyType.GetGenericArguments()[0].GetProperties();
-            //    }
-            //    else if (sourceValueType.IsClass)
-            //    {
-            //        var nestedSourceType = sourceValueType.GetNestedType(property.Name);
-            //    }
-            //}
-
-            return ds;
+            return mappedItem;
         }
 
         /// <summary>

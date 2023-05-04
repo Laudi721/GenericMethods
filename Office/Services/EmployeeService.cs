@@ -50,9 +50,9 @@ namespace Office.Services
             {
                 await Context.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                throw e;
             }
 
             return true;
