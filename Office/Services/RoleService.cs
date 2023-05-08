@@ -12,17 +12,6 @@ namespace Office.Services
         {
         }
 
-        protected override void CustomGetMapping(List<Role> models, List<RoleDto> dto)
-        {
-            var result = models.Select(x => new RoleDto
-            {
-                Id = x.Id,
-                Name = x.Name,
-            }).ToList();
-
-            dto.AddRange(result);
-        }
-
         //public override Role PostRequest(RoleDto item)
         //{
         //    // do napisania

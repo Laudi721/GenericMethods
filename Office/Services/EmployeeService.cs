@@ -46,6 +46,8 @@ namespace Office.Services
             var model = PostRequest(item);
 
             Context.Set<Employee>().Add(model);
+
+            model.Role = null;
             try
             {
                 await Context.SaveChangesAsync();
@@ -62,42 +64,6 @@ namespace Office.Services
         {
 
             throw new NotImplementedException();
-        }
-
-        //public Employee CreateModelObject(EmployeeDto employeeDto)
-        //{
-        //    var model = new Employee();
-
-        //    var password = _passwordHasher.HashPassword(employeeDto, employeeDto.Password);
-
-        //    model.Login = employeeDto.Login;
-        //    model.Password = password;
-        //    model.Name = employeeDto.Name;
-        //    model.Surname = employeeDto.Surname;
-        //    model.RoleId = employeeDto.Role.Id;
-        //    model.Hired = employeeDto.Hired;
-        //    model.Fired = employeeDto.Fired;
-
-        //    return model;
-        //}
-
-        protected override void CustomGetMapping(List<Employee> models, List<EmployeeDto> dtos)
-        {
-            var result = models.Select(model => new EmployeeDto
-            {
-                Id = model.Id,
-                Name = model.Name,
-                Login = model.Login,
-                Surname = model.Surname,
-                Password = model.Password,
-                //Role = new RoleDto
-                //{
-                //    Id = model.RoleId,
-                //    Name = model.Role.Name,
-                //}
-            }).ToList();
-
-            dtos.AddRange(result);
         }
 
         //public override Employee PostRequest(EmployeeDto item)
@@ -121,14 +87,6 @@ namespace Office.Services
             return Context.Set<Employee>()
                 .Include(a => a.Role)
                 .ToList();
-        }
-
-        protected virtual Role MapDtoToModel(RoleDto item)
-        {
-            var contex = Context.Set<Role>()
-                .FirstOrDefault(a => a.Id == item.Id);
-
-            return contex;
         }
     }
 }

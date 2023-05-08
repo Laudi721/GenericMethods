@@ -27,8 +27,6 @@ namespace Base.Controllers
         [HttpGet, Route("Get")]
         public virtual async Task<IQueryable<ModelDto>> Get()
         {
-            var result = await _service.GetAsync();
-
             return await _service.GetAsync();
         }
 

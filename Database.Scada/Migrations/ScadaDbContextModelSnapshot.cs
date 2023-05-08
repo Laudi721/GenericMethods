@@ -51,7 +51,7 @@ namespace Database.Scada.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Surname")
@@ -87,9 +87,7 @@ namespace Database.Scada.Migrations
                 {
                     b.HasOne("Database.Scada.Models.Role", "Role")
                         .WithMany("Employees")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
                 });

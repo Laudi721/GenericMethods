@@ -21,6 +21,11 @@ namespace Database.Scada
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Role>()
+                .HasKey(a => a.Id);
+                
+            modelBuilder.Entity<Employee>()
+                .HasKey(a => a.Id);
 
             modelBuilder.Entity<Employee>()
                 .HasOne(a => a.Role)

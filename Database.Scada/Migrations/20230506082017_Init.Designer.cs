@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Scada.Migrations
 {
     [DbContext(typeof(ScadaDbContext))]
-    [Migration("20230329102728_init")]
-    partial class init
+    [Migration("20230506082017_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,7 +53,7 @@ namespace Database.Scada.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Surname")
@@ -89,9 +89,7 @@ namespace Database.Scada.Migrations
                 {
                     b.HasOne("Database.Scada.Models.Role", "Role")
                         .WithMany("Employees")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
                 });

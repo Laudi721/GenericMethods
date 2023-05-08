@@ -8,14 +8,32 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 namespace Base.StaticMethod
 {
     public static class Mapper
-    //public static class Mapper<ModelDto, Model>
     {
+        public static List<T> MapCollection<T>(object source, int mappingLevel = 1) where T : class
+        {
+            return MapCollection(source, typeof(List<T>), mappingLevel) as List<T>;
+        }
+
+        public static object MapCollection(object source, Type resultType, int mappingLevel = 1)
+        {
+            var result = Activator.CreateInstance(resultType) as IList;
+
+            var singleElementType = resultType.GenericTypeArguments[0];
+
+            foreach (var item in (source as IEnumerable))
+            {
+                result.Add(Map(item, singleElementType, mappingLevel));
+            }
+
+            return result;
+        }
+
         public static T Map<T>(object source, int mappingLevel = 1) where T : class
         {
             return Map(source, typeof(T), mappingLevel) as T;
         }
 
-        public static object Map(object source, Type result, int mappingLevel = 1)
+        private static object Map(object source, Type result, int mappingLevel = 1)
         {
             if (source == null)
                 return null;

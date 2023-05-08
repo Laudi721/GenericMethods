@@ -23,9 +23,9 @@ namespace Database.Scada.Models
 
         public string Surname { get; set; }
 
-        public Role Role { get; set; }
+        public virtual Role Role { get; set; }
 
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
 
         [Column(TypeName = "datetime2")]
         public DateTime Hired { get; set; }
