@@ -7,6 +7,7 @@ using Office.Interfaces;
 
 namespace Office.Controllers
 {
+    [ApiController]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -16,16 +17,13 @@ namespace Office.Controllers
             _accountService = accountService;
         }
 
-        [HttpPost]
-        public ActionResult LoginUser([FromBody] LoginDto loginDto)
-        {
-            return Ok();
-        }
-
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginDto loginDto)
-        {
+        { 
             var token = _accountService.GenerateJwt(loginDto);
+
+            if (token == null)
+                return BadRequest();
 
             return Ok(token);
         }

@@ -1,20 +1,19 @@
-﻿using Database.Models;
+﻿using Database.Scada.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Database.Seeders
+namespace Database.Scada.Seeders
 {
     public class AdminSeeder
     {
-        private readonly SCADADbContext _context;
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly ScadaDbContext _context;
+        private readonly IPasswordHasher<Employee> _passwordHasher;
 
-        public AdminSeeder(SCADADbContext context, IPasswordHasher<User> passwordHasher)
+        public AdminSeeder(ScadaDbContext context, IPasswordHasher<Employee> passwordHasher)
         {
             _context = context;
             _passwordHasher = passwordHasher;
@@ -30,10 +29,10 @@ namespace Database.Seeders
                     _context.Roles.Add(role);
                     _context.SaveChanges();
                 }
-                if (!_context.Users.Any())
+                if (!_context.Employees.Any())
                 {
                     var user = SeedAdminUser();
-                    _context.Users.Add(user);
+                    _context.Employees.Add(user);
                     _context.SaveChanges();
                 }
             }
@@ -47,11 +46,11 @@ namespace Database.Seeders
             };
         }
 
-        public User SeedAdminUser()
+        public Employee SeedAdminUser()
         {
             var password = "0scada_admin0";
 
-            var user = new User
+            var user = new Employee
             {
                 Login = "admin_scada",
                 RoleId = 1,

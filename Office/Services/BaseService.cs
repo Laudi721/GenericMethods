@@ -1,11 +1,12 @@
 ﻿using Database;
+using Database.Scada;
 
 namespace Office.Services
 {
     public class BaseService
     {
-        public SCADADbContext Context;
+        public ScadaDbContext Context;
 
-        public BaseService(SCADADbContext context) {  Context = context; }
+        public BaseService(ScadaDbContext context) {  Context = context; }
     }
 }

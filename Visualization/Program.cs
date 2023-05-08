@@ -1,4 +1,5 @@
 using Database;
+using Database.Scada;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("SCADAConnectionString");
-builder.Services.AddDbContext<SCADADbContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<ScadaDbContext>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("SCADAConnectionString")));
 
 
 var app = builder.Build();

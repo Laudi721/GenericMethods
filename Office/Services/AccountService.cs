@@ -1,15 +1,13 @@
-﻿using Database;
-using Database.Models;
+﻿using Database.Scada;
+using Database.Scada.Models;
 using Dtos.Dtos;
 using ErrorHandling.Exceptions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Office.Authentication;
 using Office.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
 
@@ -17,10 +15,10 @@ namespace Office.Services
 {
     public class AccountService : BaseService, IAccountService
     {
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IPasswordHasher<Employee> _passwordHasher;
         private readonly AuthenticationSettings _authenticationSettings;
 
-        public AccountService(SCADADbContext context, IPasswordHasher<User> passwordHasher, AuthenticationSettings authenticationSettings) : base(context)
+        public AccountService(ScadaDbContext context, IPasswordHasher<Employee> passwordHasher, AuthenticationSettings authenticationSettings) : base(context)
         {
             _passwordHasher = passwordHasher;
             _authenticationSettings = authenticationSettings;
@@ -33,23 +31,26 @@ namespace Office.Services
 
         public string GenerateJwt(LoginDto loginDto)
         {
-            var user = Context.Set<User>()
+            var employee = Context.Set<Employee>()
                 .Include(a => a.Role)
                 .FirstOrDefault(a => a.Login == loginDto.Login);
 
-            if (user == null)
+            if (employee == null)
+            {
+                return null;
                 throw new BadRequestException("Niepoprawny login lub hasło");
+            }
 
-            var result = _passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password);
+            var result = Base.StaticMethod.HashHelper.VerifyPassword(employee, loginDto.Password);
 
             if(result == PasswordVerificationResult.Failed)
                 throw new BadRequestException("Niepoprawny login lub hasło");
 
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, $"{user.Login}"),
-                new Claim(ClaimTypes.Role, $"{user.Role.Name}")
+                new Claim(ClaimTypes.NameIdentifier, employee.Id.ToString()),
+                new Claim(ClaimTypes.Name, $"{employee.Login}"),
+                new Claim(ClaimTypes.Role, $"{employee.Role.Name}")
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
