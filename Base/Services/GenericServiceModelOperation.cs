@@ -15,7 +15,7 @@ namespace Base.Services
         /// </summary>
         /// <param name="models"></param>
         /// <param name="dto"></param>
-        protected virtual void CustomGetMapping(List<Model> models, List<ModelDto> dtos)
+        protected virtual void CustomGetMapping(IList<Model> models, List<ModelDto> dtos)
         {
         }
 
@@ -24,7 +24,7 @@ namespace Base.Services
         /// </summary>
         /// <param name="update"></param>
         /// <returns></returns>
-        public virtual void PutRequest(ModelDto update, List<Model> query)
+        public virtual void PutRequest(ModelDto update, IList<Model> query)
         {
             var model = StaticMethod.Mapper.Map<Model>(update);
 
@@ -35,7 +35,7 @@ namespace Base.Services
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public virtual Model DeleteRequest(ModelDto item, List<Model> query)
+        public virtual Model DeleteRequest(ModelDto item, IList<Model> query)
         {
             var model = StaticMethod.Mapper.Map<Model>(item);
 

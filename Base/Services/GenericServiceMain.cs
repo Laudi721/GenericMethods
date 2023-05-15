@@ -1,5 +1,6 @@
 ﻿using Base.Interfaces;
 using Database.Scada;
+using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -107,13 +108,6 @@ namespace Base.Services
             return true;
         }
 
-        // Generic Methods
-
-
-
-
-
-
         /// <summary>
         /// Metoda pomocnicza dodająca model
         /// </summary>
@@ -207,7 +201,7 @@ namespace Base.Services
         /// Metoda przygotowująca dane z bazy pod wybrany model
         /// </summary>
         /// <returns></returns>
-        protected virtual List<Model> PreparedQuery()
+        protected virtual IList<Model> PreparedQuery()
         {
             return Context.Set<Model>().ToList();
         }

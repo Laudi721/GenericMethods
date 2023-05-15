@@ -90,6 +90,10 @@ void DependencyInjection(WebApplicationBuilder builder)
     builder.Services.AddScoped<IGenericService<EmployeeDto>, EmployeeService>();
     builder.Services.AddScoped<IRoleService, RoleService>();
     builder.Services.AddScoped<IGenericService<RoleDto>, RoleService>();
+    builder.Services.AddScoped<IUnitService, UnitService>();
+    builder.Services.AddScoped<IGenericService<UnitDto>, UnitService>();
+    builder.Services.AddScoped<IProductService, ProductService>();
+    builder.Services.AddScoped<IGenericService<ProductDto>, ProductService>();
     //builder.Services.AddScoped<IGenericService<RoleDto>>(x => x.GetRequiredService<IRoleService>());
     //builder.Services.AddScoped<IGenericService<EmployeeDto>>(a => a.GetRequiredService<IEmployeeService>());
 

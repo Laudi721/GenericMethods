@@ -19,6 +19,10 @@ namespace Database.Scada
 
         public virtual DbSet<Employee> Employees { get; set; }
 
+        public virtual DbSet<Unit> Units { get; set; }
+
+        public virtual DbSet<Product> Products { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>()
@@ -30,6 +34,10 @@ namespace Database.Scada
             modelBuilder.Entity<Employee>()
                 .HasOne(a => a.Role)
                 .WithMany(a => a.Employees);
+
+            modelBuilder.Entity<Unit>()
+                .HasMany(a => a.Products)
+                .WithOne(a => a.Unit);
         }
     }
 }

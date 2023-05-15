@@ -64,7 +64,7 @@ namespace Office.Services
             throw new NotImplementedException();
         }
 
-        protected override void CustomGetMapping(List<Employee> models, List<EmployeeDto> dtos)
+        protected override void CustomGetMapping(IList<Employee> models, List<EmployeeDto> dtos)
         {
             foreach(var model in models.Where(a => a.IsDeleted))
             {
@@ -73,7 +73,7 @@ namespace Office.Services
             }
         }
 
-        protected override List<Employee> PreparedQuery()
+        protected override IList<Employee> PreparedQuery()
         {
             return Context.Set<Employee>()
                 .Include(a => a.Role)

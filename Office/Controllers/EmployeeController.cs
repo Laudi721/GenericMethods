@@ -17,7 +17,7 @@ namespace Office.Controllers
         //}
 
         public EmployeeController(IGenericService<EmployeeDto> service, IEmployeeService employeeService)
-    : base(service)
+            : base(service)
         {
             _employeeService = employeeService;
         }

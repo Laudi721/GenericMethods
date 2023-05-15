@@ -9,12 +9,12 @@ namespace Base.StaticMethod
 {
     public static class Mapper
     {
-        public static List<T> MapCollection<T>(object source, int mappingLevel = 1) where T : class
+        public static List<T> MapCollection<T>(object source, int mappingLevel = 2) where T : class
         {
             return MapCollection(source, typeof(List<T>), mappingLevel) as List<T>;
         }
 
-        public static object MapCollection(object source, Type resultType, int mappingLevel = 1)
+        public static object MapCollection(object source, Type resultType, int mappingLevel = 2)
         {
             var result = Activator.CreateInstance(resultType) as IList;
 
@@ -28,12 +28,12 @@ namespace Base.StaticMethod
             return result;
         }
 
-        public static T Map<T>(object source, int mappingLevel = 1) where T : class
+        public static T Map<T>(object source, int mappingLevel = 2) where T : class
         {
             return Map(source, typeof(T), mappingLevel) as T;
         }
 
-        private static object Map(object source, Type result, int mappingLevel = 1)
+        private static object Map(object source, Type result, int mappingLevel = 2)
         {
             if (source == null)
                 return null;
@@ -83,7 +83,6 @@ namespace Base.StaticMethod
         private static void HandleModelMapping(PropertyInfo getter, PropertyInfo setter, object source, object destination, Type propertyType, int mappingLevel)
         {
             var sourceValue = getter.GetValue(source);
-            var resultValue = Activator.CreateInstance(propertyType).GetType();
 
             if (sourceValue == null)
             {
@@ -91,9 +90,33 @@ namespace Base.StaticMethod
                 return;
             }
 
-            var obj = Map(sourceValue, resultValue, mappingLevel - 1);
+            if (!(sourceValue is IEnumerable))
+            {
+                var resultValue = Activator.CreateInstance(propertyType).GetType();
+                var obj = Map(sourceValue, resultValue, mappingLevel - 1);
+                setter.SetValue(destination, obj);
 
-            setter.SetValue(destination, obj);
+            }
+            else if(sourceValue is IEnumerable)
+            {
+                var propType = propertyType.GenericTypeArguments.First();
+                var collection = Activator.CreateInstance(propertyType) as IList;
+
+                if (!propType.IsSealed)
+                {
+                    foreach (var item in (sourceValue as IEnumerable))
+                    {
+                        var genericInstance = Map(item, propType, mappingLevel);
+
+                        collection.Add(genericInstance);
+                    }
+                }
+                //var resultValue = Activator.CreateInstance(propertyType).GetType();
+                //var obj = Map(sourceValue, resultValue, mappingLevel - 1);
+
+                setter.SetValue(destination, collection);
+            }
+            //setter.SetValue(destination, obj);
         }
 
         private static PropertyInfo SetterProperty(Type type, string propertyName)
