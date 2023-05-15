@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Database.Scada.Base;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,10 +11,8 @@ using System.Threading.Tasks;
 namespace Database.Scada.Models
 {
     [Table("Employees")]
-    public class Employee
+    public class Employee : BaseModel
     {
-        [Key]
-        public int Id { get; set; }
 
         public string Login { get; set; }
 
@@ -34,10 +33,5 @@ namespace Database.Scada.Models
         public DateTime? Fired { get; set; }
 
         public bool IsFired { get; set; }
-
-        public bool IsDeleted { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? TimeDeleted { get; set; }
     }
 }

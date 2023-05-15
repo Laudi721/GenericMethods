@@ -18,5 +18,7 @@ namespace Dtos.Dtos
         public string Name { get; set; }
 
         public List<EmployeeDto> Employees { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Scada.Migrations
 {
     [DbContext(typeof(ScadaDbContext))]
-    [Migration("20230506082017_Init")]
+    [Migration("20230508195402_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,7 +59,7 @@ namespace Database.Scada.Migrations
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("TimeDeleted")
+                    b.Property<DateTime>("TimeDeleted")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -77,8 +77,14 @@ namespace Database.Scada.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TimeDeleted")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

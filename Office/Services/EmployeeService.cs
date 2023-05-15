@@ -46,8 +46,6 @@ namespace Office.Services
             var model = PostRequest(item);
 
             Context.Set<Employee>().Add(model);
-
-            model.Role = null;
             try
             {
                 await Context.SaveChangesAsync();
@@ -66,21 +64,14 @@ namespace Office.Services
             throw new NotImplementedException();
         }
 
-        //public override Employee PostRequest(EmployeeDto item)
-        //{
-        //    var model = new Employee
-        //    {
-        //        Login = item.Login,
-        //        Name = item.Name,
-        //        Surname = item.Surname,
-        //        Hired = item.Hired,
-        //        Role = MapDtoToModel(item.Role),
-        //    };
-
-        //    model.Password = Base.StaticMethod.HashHelper.HashPassword(model, item.Password);
-
-        //    return model;
-        //}
+        protected override void CustomGetMapping(List<Employee> models, List<EmployeeDto> dtos)
+        {
+            foreach(var model in models.Where(a => a.IsDeleted))
+            {
+                var item = dtos.FirstOrDefault(a => a.Id == model.Id);
+                dtos.Remove(item);
+            }
+        }
 
         protected override List<Employee> PreparedQuery()
         {

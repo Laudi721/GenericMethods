@@ -57,7 +57,7 @@ namespace Database.Scada.Migrations
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("TimeDeleted")
+                    b.Property<DateTime>("TimeDeleted")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -75,8 +75,14 @@ namespace Database.Scada.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TimeDeleted")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
