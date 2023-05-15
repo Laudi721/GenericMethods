@@ -44,5 +44,19 @@ namespace Base.Services
 
             return model;
         }
+
+        /// <summary>
+        /// Metoda pomocnicza dodająca model
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public virtual Model PostRequest(ModelDto item)
+        {
+            var model = StaticMethod.Mapper.Map<Model>(item);
+
+            ModelPostOperations(model);
+
+            return model;
+        }
     }
 }
