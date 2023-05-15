@@ -10,11 +10,11 @@ namespace Office.Controllers
     [Route("[controller]")]
     public class UnitController : GenericController<UnitDto>
     {
-        private readonly IUnitService _service;
+        private readonly IUnitService _serviceUnit;
 
         public UnitController(IGenericService<UnitDto> service, IUnitService unitService) : base(service)
         {
-            _service = unitService;
+            _serviceUnit = unitService;
         }
     }
 }

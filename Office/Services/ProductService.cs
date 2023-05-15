@@ -2,8 +2,8 @@
 using Database.Scada;
 using Database.Scada.Models;
 using Dtos.Dtos;
+using Microsoft.EntityFrameworkCore;
 using Office.Interfaces;
-using System.Data.Entity;
 
 namespace Office.Services
 {

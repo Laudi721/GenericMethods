@@ -10,11 +10,11 @@ namespace Office.Controllers
     [Route("[controller]")]
     public class ProductController : GenericController<ProductDto>
     {
-        private readonly IProductService _service;
+        private readonly IProductService _serviceProduct;
 
         public ProductController(IGenericService<ProductDto> service, IProductService productService) : base(service)
         {
-            _service = productService;
+            _serviceProduct = productService;
         }
     }
 }

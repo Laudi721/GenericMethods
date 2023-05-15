@@ -2,10 +2,9 @@
 using Database.Scada;
 using Database.Scada.Models;
 using Dtos.Dtos;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Office.Interfaces;
+using System.Web.Http;
 
 namespace Office.Services
 {

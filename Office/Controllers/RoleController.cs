@@ -7,11 +7,11 @@ namespace Office.Controllers
 {
     public class RoleController : GenericController<RoleDto>
     {
-        private readonly IRoleService _service;
+        private readonly IRoleService _serviceRole;
 
         public RoleController(IGenericService<RoleDto> service, IRoleService roleService) : base(service)
         {
-            _service = roleService;
+            _serviceRole = roleService;
         }
     }
 }
