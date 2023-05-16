@@ -91,9 +91,7 @@ namespace Base.Services
         /// <returns></returns>
         public virtual async Task<bool> PutAsync([FromBody] ModelDto update)
         {
-            var query = PreparedQuery();
-
-            PutRequest(update, query);
+            PutRequest(update);
 
             try
             {

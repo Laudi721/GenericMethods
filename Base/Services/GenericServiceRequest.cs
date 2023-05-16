@@ -24,9 +24,18 @@ namespace Base.Services
         /// </summary>
         /// <param name="update"></param>
         /// <returns></returns>
-        public virtual void PutRequest(ModelDto update, IList<Model> query)
+        public virtual void PutRequest(ModelDto update)
         {
-            var model = StaticMethod.Mapper.Map<Model>(update);
+            IQueryable<Model> query = Context.Set<Model>();
+
+            var model = QueryFilteredByKey(update, ref query).FirstOrDefault();
+
+            var item = StaticMethod.Mapper.Map<Model>(update);
+
+            if(item != null)
+                Context.Entry(model).CurrentValues.SetValues(item);
+
+            ModelOperations(model, item);
 
         }
 
@@ -54,7 +63,7 @@ namespace Base.Services
         {
             var model = StaticMethod.Mapper.Map<Model>(item);
 
-            ModelPostOperations(model);
+            ModelOperations(model);
 
             return model;
         }

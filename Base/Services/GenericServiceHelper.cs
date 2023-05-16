@@ -13,14 +13,14 @@ namespace Base.Services
     public abstract partial class GenericService<Model, ModelDto> : IGenericService<ModelDto> where ModelDto : class
                                                                                               where Model : class
     {
-        protected void ModelPostOperations(object model)
+        protected void ModelOperations(object model, object update = null)
         {
             var singleRelations = model.GetType().GetProperties().Where(a => !a.PropertyType.IsSealed && !typeof(IEnumerable).IsAssignableFrom(a.PropertyType)).ToList();
             var multiRelations = model.GetType().GetProperties().Where(a => !a.PropertyType.IsSealed && typeof(IEnumerable).IsAssignableFrom(a.PropertyType)).ToList();
 
             foreach (var single in singleRelations)
             {
-                var propertyValue = single.GetValue(model);
+                var propertyValue = update == null ? single.GetValue(model) : single.GetValue(update);
                 var propertyType = single.PropertyType;
                 var propertyName = single.Name;
 

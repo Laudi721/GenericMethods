@@ -67,7 +67,7 @@ namespace Base.Controllers
         /// </summary>
         /// <param name="update"></param>
         /// <returns></returns>
-        [HttpPost, Route("Async")]
+        [HttpPost, Route("Put")]
         public virtual async Task<IActionResult> Put([FromBody] ModelDto update)
         {
             var result = await _service.PutAsync(update);
