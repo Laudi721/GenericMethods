@@ -13,9 +13,9 @@ namespace Base.Services
         /// Metoda przygotowująca dane z bazy pod wybrany model
         /// </summary>
         /// <returns></returns>
-        protected virtual IList<Model> PreparedQuery()
+        protected virtual IQueryable<Model> PreparedQuery()
         {
-            return Context.Set<Model>().ToList();
+            return Context.Set<Model>().AsQueryable();
         }
 
         protected virtual IQueryable<Model> QueryFilteredByKey(ModelDto item, ref IQueryable<Model> query)
@@ -47,6 +47,13 @@ namespace Base.Services
             }
 
             return dynamicQuery.ToString();
+        }
+
+        protected virtual IQueryable<Model> DeleteQuery(ModelDto item)
+        {
+            IQueryable<Model> query = Context.Set<Model>();
+
+            return QueryFilteredByKey(item, ref query);
         }
     }
 }

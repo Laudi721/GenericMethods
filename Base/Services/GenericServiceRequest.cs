@@ -15,7 +15,7 @@ namespace Base.Services
         /// </summary>
         /// <param name="models"></param>
         /// <param name="dto"></param>
-        protected virtual void CustomGetMapping(IList<Model> models, List<ModelDto> dtos)
+        protected virtual void CustomGetMapping(IQueryable<Model> models, List<ModelDto> dtos)
         {
         }
 

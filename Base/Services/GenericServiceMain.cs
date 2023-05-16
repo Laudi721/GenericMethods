@@ -66,19 +66,25 @@ namespace Base.Services
         /// <exception cref="Exception"></exception>
         public virtual async Task<bool> DeleteAsync([FromBody] ModelDto item)
         {
-            var query = PreparedQuery();
-
-            var model = DeleteRequest(item, query);
-
-            Context.Set<Model>().Update(model);
-            try
+            using (var transaction = Context.Database.BeginTransaction())
             {
-                await Context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                // obsluga erroru do napisania
-                return false;
+                var query = PreparedQuery();
+
+                var model = await DeleteQuery(item).FirstOrDefaultAsync();
+
+                Context.Set<Model>().Remove(model);
+
+                try
+                {
+                    await Context.SaveChangesAsync();
+
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw new Exception(e.ToString());
+                }
             }
 
             return true;

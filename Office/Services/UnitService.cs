@@ -13,11 +13,11 @@ namespace Office.Services
         {
         }
 
-        protected override IList<Unit> PreparedQuery()
+        protected override IQueryable<Unit> PreparedQuery()
         {
             return Context.Set<Unit>()
                 .Include(a => a.Products)
-                .ToList();
+                .AsQueryable();
         }
     }
 }

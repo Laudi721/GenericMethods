@@ -33,7 +33,7 @@ namespace Office.Services
         //    return true;
         //}
 
-        protected override void CustomGetMapping(IList<Role> models, List<RoleDto> dtos)
+        protected override void CustomGetMapping(IQueryable<Role> models, List<RoleDto> dtos)
         {
             foreach(var model in models.Where(a => a.IsDeleted))
             {
@@ -53,11 +53,11 @@ namespace Office.Services
         //    return model;
         //}
 
-        protected override IList<Role> PreparedQuery()
+        protected override IQueryable<Role> PreparedQuery()
         {
             return Context.Set<Role>()
                 .Include(a => a.Employees)
-                .ToList();
+                .AsQueryable();
         }
     }
 }
