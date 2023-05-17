@@ -18,10 +18,13 @@ namespace Base.StaticMethod
         {
             var result = Activator.CreateInstance(resultType) as IList;
 
-            var singleElementType = resultType.GenericTypeArguments[0];
+            var singleElementType = resultType.GenericTypeArguments[0];            
 
             foreach (var item in (source as IEnumerable))
             {
+                if((bool)item.GetType().GetProperty("IsDeleted").GetValue(item))
+                    continue;
+
                 result.Add(Map(item, singleElementType, mappingLevel));
             }
 

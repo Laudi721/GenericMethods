@@ -13,6 +13,14 @@ namespace Office.Services
         {
         }
 
+        protected override bool AdditionalCheckBeforeDelete(Unit model)
+        {
+            if(model.Products.Any())
+                return false;
+
+            return base.AdditionalCheckBeforeDelete(model);
+        }
+
         protected override IQueryable<Unit> PreparedQuery()
         {
             return Context.Set<Unit>()

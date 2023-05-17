@@ -44,14 +44,11 @@ namespace Base.Services
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public virtual Model DeleteRequest(ModelDto item, IList<Model> query)
+        public virtual void DeleteRequest(Model model)
         {
-            var model = StaticMethod.Mapper.Map<Model>(item);
+            var deletetedItem = DeleteModel(model);
 
-            //SetModelAsDeleted(model);
-            DeleteModel(model);
-
-            return model;
+            Context.Entry(model).CurrentValues.SetValues(deletetedItem);
         }
 
         /// <summary>

@@ -13,26 +13,6 @@ namespace Office.Services
         {
         }
 
-        //public override async Task<bool> DeleteAsync([FromBody] RoleDto item)
-        //{
-        //    var query = PreparedQuery();
-
-        //    var model = DeleteRequest(item, query);
-
-        //    Context.Set<Role>().Update(model);
-        //    try
-        //    {
-        //        await Context.SaveChangesAsync();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        // obsluga erroru do napisania
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
-
         protected override void CustomGetMapping(IQueryable<Role> models, List<RoleDto> dtos)
         {
             foreach(var model in models.Where(a => a.IsDeleted))
@@ -42,16 +22,14 @@ namespace Office.Services
             }
         }
 
-        //public override Role DeleteRequest(RoleDto item, List<Role> query)
-        //{
-        //    var model = query.FirstOrDefault(a => a.Id == item.Id);
+        protected override bool AdditionalCheckBeforeDelete(Role model)
+        {
+            // Wartość "1" zawsze bedzie administratorem seedowanym wraz z pierwszym uruchomieniem aplikacji.
+            if (model.Employees.Any() || model.Id == 1) 
+                return false;
 
-        //    model.IsDeleted = true;
-        //    model.TimeDeleted = DateTime.UtcNow;
-        //    model.Employees = null;
-
-        //    return model;
-        //}
+            return base.AdditionalCheckBeforeDelete(model);
+        }
 
         protected override IQueryable<Role> PreparedQuery()
         {

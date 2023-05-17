@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http.Validation.Validators;
 
 namespace Base.Services
 {
@@ -45,14 +46,14 @@ namespace Base.Services
             var modelValue = property.GetValue(model) as IList;
         }
 
-        private void DeleteModel(Model model)
+        private Model DeleteModel(Model model)
         {
             var singleRelations = model.GetType().GetProperties().Where(a => !a.PropertyType.IsSealed && !typeof(IEnumerable).IsAssignableFrom(a.PropertyType)).ToList();
             var multiRelations = model.GetType().GetProperties().Where(a => !a.PropertyType.IsSealed && typeof(IEnumerable).IsAssignableFrom(a.PropertyType)).ToList();
 
             foreach (var single in singleRelations)
             {
-                DropRelationKey(single, model);
+                //DropRelationKey(single, model);
                 single.SetValue(model, null);
             }
 
@@ -64,6 +65,8 @@ namespace Base.Services
 
             isDeleted.SetValue(model, true);
             timeDeleted.SetValue(model, DateTime.UtcNow);
+
+            return model;
         }
 
         /// <summary>
@@ -107,26 +110,9 @@ namespace Base.Services
             }
         }
 
-        private void DropRelationKey(PropertyInfo property, object model)
+        protected virtual bool AdditionalCheckBeforeDelete(Model model)
         {
-            var propertyTye = property.PropertyType;
-            var propertyName = property.Name;
-            var propertyValue = property.GetValue(model);
-
-
-
-        }
-
-        private void SetModelAsDeleted(Model model)
-        {
-            var isDeleted = model.GetType().GetProperty("IsDeleted");
-            var timeDeleted = model.GetType().GetProperty("TimeDeleted");
-
-            if (isDeleted == null || timeDeleted == null)
-                return;
-
-            isDeleted.SetValue(model, true);
-            timeDeleted.SetValue(model, DateTime.UtcNow);
+            return true;
         }
     }
 }

@@ -10,31 +10,13 @@ namespace Office.Services
 {
     public class EmployeeService : GenericService<Employee, EmployeeDto>, IEmployeeService
     {
-        //private readonly IPasswordHasher<EmployeeDto> _passwordHasher;
         public EmployeeService(ScadaDbContext context) : base(context)
         {
-            //_passwordHasher = passwordHasher;
-        }
-
-        public bool Delete(int id)
-        {
-            var user = Context.Set<Employee>()
-                .FirstOrDefault(a => a.Id == id);
-
-            if (user != null)
-            {
-                user.IsDeleted = true;
-                Context.SaveChanges();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         public override async Task<bool> PostAsync([FromBody] EmployeeDto item)
         {
+
             var models = PreparedQuery();
 
             var exist = models.FirstOrDefault(a => a.Login == item.Login);
@@ -43,6 +25,9 @@ namespace Office.Services
                 return false;
 
             var model = PostRequest(item);
+
+            var hashedPassword = Base.StaticMethod.HashHelper.HashPassword(model, model.Password);
+            model.Password = hashedPassword;
 
             Context.Set<Employee>().Add(model);
             try
@@ -57,20 +42,23 @@ namespace Office.Services
             return true;
         }
 
-        public bool Put([FromBody] EmployeeDto employeeDto)
+        protected override bool AdditionalCheckBeforeDelete(Employee model)
         {
+            //Wartość "1" zawsze bedzie administratorem seedowanym wraz z pierwszym uruchomieniem aplikacji.
+            if (model.Id == 1) 
+                return false;
 
-            throw new NotImplementedException();
+            return base.AdditionalCheckBeforeDelete(model);
         }
 
-        protected override void CustomGetMapping(IQueryable<Employee> models, List<EmployeeDto> dtos)
-        {
-            foreach(var model in models.Where(a => a.IsDeleted))
-            {
-                var item = dtos.FirstOrDefault(a => a.Id == model.Id);
-                dtos.Remove(item);
-            }
-        }
+        //protected override void CustomGetMapping(IQueryable<Employee> models, List<EmployeeDto> dtos)
+        //{
+        //    foreach(var model in models.Where(a => a.IsDeleted))
+        //    {
+        //        var item = dtos.FirstOrDefault(a => a.Id == model.Id);
+        //        dtos.Remove(item);
+        //    }
+        //}
 
         protected override IQueryable<Employee> PreparedQuery()
         {

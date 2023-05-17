@@ -72,7 +72,18 @@ namespace Base.Services
 
                 var model = await DeleteQuery(item).FirstOrDefaultAsync();
 
-                Context.Set<Model>().Remove(model);
+                if (model == null)
+                    return false;
+
+               model = query.FirstOrDefault(a => a.Equals(model));
+
+                if (!AdditionalCheckBeforeDelete(model))
+                {
+                    Console.WriteLine($"ConsoleLog: Błąd podczas usuwania modelu z bazy: {typeof(Model).Name}");
+                    return false;
+                }
+
+                DeleteRequest(model);
 
                 try
                 {
