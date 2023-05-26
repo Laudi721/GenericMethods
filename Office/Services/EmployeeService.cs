@@ -16,7 +16,6 @@ namespace Office.Services
 
         public override async Task<bool> PostAsync([FromBody] EmployeeDto item)
         {
-
             var models = PreparedQuery();
 
             var exist = models.FirstOrDefault(a => a.Login == item.Login);
@@ -36,6 +35,7 @@ namespace Office.Services
             }
             catch (Exception e)
             {
+                return false;
                 throw e;
             }
 
@@ -50,15 +50,6 @@ namespace Office.Services
 
             return base.AdditionalCheckBeforeDelete(model);
         }
-
-        //protected override void CustomGetMapping(IQueryable<Employee> models, List<EmployeeDto> dtos)
-        //{
-        //    foreach(var model in models.Where(a => a.IsDeleted))
-        //    {
-        //        var item = dtos.FirstOrDefault(a => a.Id == model.Id);
-        //        dtos.Remove(item);
-        //    }
-        //}
 
         protected override IQueryable<Employee> PreparedQuery()
         {

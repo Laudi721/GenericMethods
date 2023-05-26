@@ -1,10 +1,13 @@
 ﻿using Base.Controllers;
 using Base.Interfaces;
 using Dtos.Dtos;
+using Microsoft.AspNetCore.Mvc;
 using Office.Interfaces;
 
 namespace Office.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class RoleController : GenericController<RoleDto>
     {
         private readonly IRoleService _serviceRole;

@@ -65,37 +65,32 @@ namespace Base.Services
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         public virtual async Task<bool> DeleteAsync([FromBody] ModelDto item)
-        {
-            using (var transaction = Context.Database.BeginTransaction())
+        {            
+            var query = PreparedQuery();
+
+            var model = await DeleteQuery(item).FirstOrDefaultAsync();
+
+            if (model == null)
+                return false;
+
+            model = query.FirstOrDefault(a => a.Equals(model));
+
+            if (!AdditionalCheckBeforeDelete(model))
             {
-                var query = PreparedQuery();
+                Console.WriteLine($"ConsoleLog: Błąd podczas usuwania modelu z bazy: {typeof(Model).Name}");
+                return false;
+            }
 
-                var model = await DeleteQuery(item).FirstOrDefaultAsync();
+            DeleteRequest(model);
 
-                if (model == null)
-                    return false;
-
-               model = query.FirstOrDefault(a => a.Equals(model));
-
-                if (!AdditionalCheckBeforeDelete(model))
-                {
-                    Console.WriteLine($"ConsoleLog: Błąd podczas usuwania modelu z bazy: {typeof(Model).Name}");
-                    return false;
-                }
-
-                DeleteRequest(model);
-
-                try
-                {
-                    await Context.SaveChangesAsync();
-
-                    transaction.Commit();
-                }
-                catch (Exception e)
-                {
-                    transaction.Rollback();
-                    throw new Exception(e.ToString());
-                }
+            try
+            {
+                await Context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw new Exception(e.ToString());
             }
 
             return true;

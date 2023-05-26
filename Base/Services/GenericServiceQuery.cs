@@ -19,6 +19,12 @@ namespace Base.Services
             return Context.Set<Model>().AsQueryable();
         }
 
+        /// <summary>
+        /// Metoda zwracajaca kolekcje modeli ograniczoną kluczami.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
         protected virtual IQueryable<Model> QueryFilteredByKey(ModelDto item, ref IQueryable<Model> query)
         {
             var keys = item.GetType().GetProperties().Where(a => a.GetCustomAttributes(typeof(KeyAttribute), false).Length > 0).ToList();
@@ -30,6 +36,12 @@ namespace Base.Services
             return query;
         }
 
+        /// <summary>
+        /// Metoda tworząca lambdę 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="keys"></param>
+        /// <returns></returns>
         private string QueryCondition(object obj, IEnumerable<PropertyInfo> keys)
         {
             var dynamicQuery = new StringBuilder();
@@ -50,6 +62,11 @@ namespace Base.Services
             return dynamicQuery.ToString();
         }
 
+        /// <summary>
+        /// Metoda wybierająca model, który zostanie usunięty.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         protected virtual IQueryable<Model> DeleteQuery(ModelDto item)
         {
             IQueryable<Model> query = Context.Set<Model>();

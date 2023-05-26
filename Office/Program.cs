@@ -26,8 +26,6 @@ builder.Services.AddDbContext<ScadaDbContext>(options => options.UseSqlServer(co
 //builder.Services.AddDbContext<Scada>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("ScadaConnectionString")));
 builder.Services.AddScoped<AdminSeeder>();
 builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
-//builder.Services.AddScoped<EmployeeService>();
-//builder.Services.AddScoped<IPasswordHasher<EmployeeDto>, PasswordHasher<EmployeeDto>>();
 
 //Authentication
 var authenticationSettings = new AuthenticationSettings();
