@@ -4,6 +4,7 @@ using Database.Scada;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Scada.Migrations
 {
     [DbContext(typeof(ScadaDbContext))]
-    partial class ScadaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230515191035_AddUnitAndProduct")]
+    partial class AddUnitAndProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +59,7 @@ namespace Database.Scada.Migrations
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("TimeDeleted")
+                    b.Property<DateTime>("TimeDeleted")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -84,7 +86,7 @@ namespace Database.Scada.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("TimeDeleted")
+                    b.Property<DateTime>("TimeDeleted")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UnitId")
@@ -111,7 +113,7 @@ namespace Database.Scada.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("TimeDeleted")
+                    b.Property<DateTime>("TimeDeleted")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -133,7 +135,7 @@ namespace Database.Scada.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("TimeDeleted")
+                    b.Property<DateTime>("TimeDeleted")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

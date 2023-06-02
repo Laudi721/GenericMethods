@@ -26,8 +26,6 @@ builder.Services.AddDbContext<ScadaDbContext>(options => options.UseSqlServer(co
 //builder.Services.AddDbContext<Scada>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("ScadaConnectionString")));
 builder.Services.AddScoped<AdminSeeder>();
 builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
-//builder.Services.AddScoped<EmployeeService>();
-//builder.Services.AddScoped<IPasswordHasher<EmployeeDto>, PasswordHasher<EmployeeDto>>();
 
 //Authentication
 var authenticationSettings = new AuthenticationSettings();
@@ -86,10 +84,19 @@ void DependencyInjection(WebApplicationBuilder builder)
 {
     builder.Services.AddScoped<IAccountService, AccountService>();
     builder.Services.AddSingleton(authenticationSettings);
+
     builder.Services.AddScoped<IEmployeeService, EmployeeService>();
     builder.Services.AddScoped<IGenericService<EmployeeDto>, EmployeeService>();
+
     builder.Services.AddScoped<IRoleService, RoleService>();
     builder.Services.AddScoped<IGenericService<RoleDto>, RoleService>();
+
+    builder.Services.AddScoped<IUnitService, UnitService>();
+    builder.Services.AddScoped<IGenericService<UnitDto>, UnitService>();
+
+    builder.Services.AddScoped<IProductService, ProductService>();
+    builder.Services.AddScoped<IGenericService<ProductDto>, ProductService>();
+
     //builder.Services.AddScoped<IGenericService<RoleDto>>(x => x.GetRequiredService<IRoleService>());
     //builder.Services.AddScoped<IGenericService<EmployeeDto>>(a => a.GetRequiredService<IEmployeeService>());
 

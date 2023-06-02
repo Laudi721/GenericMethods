@@ -10,7 +10,6 @@ using System.Web.Http.Controllers;
 namespace Base.Controllers
 {
     [Route("[controller]")]
-    //[ApiController, Route("[controller]")]
     public abstract class GenericController<ModelDto> : ControllerBase
     {
         private readonly IGenericService<ModelDto> _service;
@@ -67,7 +66,7 @@ namespace Base.Controllers
         /// </summary>
         /// <param name="update"></param>
         /// <returns></returns>
-        [HttpPost, Route("Async")]
+        [HttpPost, Route("Put")]
         public virtual async Task<IActionResult> Put([FromBody] ModelDto update)
         {
             var result = await _service.PutAsync(update);

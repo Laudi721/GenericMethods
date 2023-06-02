@@ -2,36 +2,16 @@
 using Database.Scada;
 using Database.Scada.Models;
 using Dtos.Dtos;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Office.Interfaces;
+using System.Web.Http;
 
 namespace Office.Services
 {
     public class EmployeeService : GenericService<Employee, EmployeeDto>, IEmployeeService
     {
-        //private readonly IPasswordHasher<EmployeeDto> _passwordHasher;
         public EmployeeService(ScadaDbContext context) : base(context)
         {
-            //_passwordHasher = passwordHasher;
-        }
-
-        public bool Delete(int id)
-        {
-            var user = Context.Set<Employee>()
-                .FirstOrDefault(a => a.Id == id);
-
-            if (user != null)
-            {
-                user.IsDeleted = true;
-                Context.SaveChanges();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         public override async Task<bool> PostAsync([FromBody] EmployeeDto item)
@@ -45,48 +25,37 @@ namespace Office.Services
 
             var model = PostRequest(item);
 
-            Context.Set<Employee>().Add(model);
+            var hashedPassword = Base.StaticMethod.HashHelper.HashPassword(model, model.Password);
+            model.Password = hashedPassword;
 
-            model.Role = null;
+            Context.Set<Employee>().Add(model);
             try
             {
                 await Context.SaveChangesAsync();
             }
             catch (Exception e)
             {
+                return false;
                 throw e;
             }
 
             return true;
         }
 
-        public bool Put([FromBody] EmployeeDto employeeDto)
+        protected override bool AdditionalCheckBeforeDelete(Employee model)
         {
+            //Wartość "1" zawsze bedzie administratorem seedowanym wraz z pierwszym uruchomieniem aplikacji.
+            if (model.Id == 1) 
+                return false;
 
-            throw new NotImplementedException();
+            return base.AdditionalCheckBeforeDelete(model);
         }
 
-        //public override Employee PostRequest(EmployeeDto item)
-        //{
-        //    var model = new Employee
-        //    {
-        //        Login = item.Login,
-        //        Name = item.Name,
-        //        Surname = item.Surname,
-        //        Hired = item.Hired,
-        //        Role = MapDtoToModel(item.Role),
-        //    };
-
-        //    model.Password = Base.StaticMethod.HashHelper.HashPassword(model, item.Password);
-
-        //    return model;
-        //}
-
-        protected override List<Employee> PreparedQuery()
+        protected override IQueryable<Employee> PreparedQuery()
         {
             return Context.Set<Employee>()
                 .Include(a => a.Role)
-                .ToList();
+                .AsQueryable();
         }
     }
 }

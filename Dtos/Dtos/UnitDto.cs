@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace Dtos.Dtos
 {
-    public class RoleDto
+    public class UnitDto
     {
-        public RoleDto()
+        public UnitDto()
         {
-            Employees = new List<EmployeeDto>();
+            Products = new List<ProductDto>();
         }
+
         [Key]
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public List<EmployeeDto> Employees { get; set; }
+        public List<ProductDto> Products { get; set; }
     }
 }

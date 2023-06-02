@@ -1,14 +1,14 @@
 ﻿using Base.Interfaces;
 using Database.Scada;
-//using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using System.ComponentModel.Design;
+using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Web.Http;
 
 namespace Base.Services
 {
-    public abstract class GenericService<Model, ModelDto> : IGenericService<ModelDto> where ModelDto : class 
+    public abstract partial class GenericService<Model, ModelDto> : IGenericService<ModelDto> where ModelDto : class
                                                                                       where Model : class
     {
         protected readonly ScadaDbContext Context;
@@ -28,7 +28,6 @@ namespace Base.Services
 
             var models = query.ToList();
 
-            //var result = new List<ModelDto>();
             var result = StaticMethod.Mapper.MapCollection<ModelDto>(models);
 
             CustomGetMapping(query, result);
@@ -66,37 +65,45 @@ namespace Base.Services
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         public virtual async Task<bool> DeleteAsync([FromBody] ModelDto item)
-        {
+        {            
             var query = PreparedQuery();
 
-            var deletedItem = DeleteRequest(item, query);
+            var model = await DeleteQuery(item).FirstOrDefaultAsync();
 
-            Context.Set<Model>().Update(deletedItem);
+            if (model == null)
+                return false;
+
+            model = query.FirstOrDefault(a => a.Equals(model));
+
+            if (!AdditionalCheckBeforeDelete(model))
+            {
+                Console.WriteLine($"ConsoleLog: Błąd podczas usuwania modelu z bazy: {typeof(Model).Name}");
+                return false;
+            }
+
+            DeleteRequest(model);
+
             try
             {
                 await Context.SaveChangesAsync();
             }
             catch (Exception e)
             {
-                // obsluga erroru do napisania
                 return false;
+                throw new Exception(e.ToString());
             }
 
             return true;
         }
 
         /// <summary>
-        /// Generyczna metoda aktualizująca model
+        /// Metoda aktualizująca model
         /// </summary>
         /// <param name="update"></param>
         /// <returns></returns>
         public virtual async Task<bool> PutAsync([FromBody] ModelDto update)
         {
-            var query = PreparedQuery();
-
-            var updateItem = PutRequest(update, query);
-
-            Context.Set<Model>().Update(updateItem);
+            PutRequest(update);
 
             try
             {
@@ -109,67 +116,6 @@ namespace Base.Services
             }
 
             return true;
-        }
-
-        // Generic Methods
-
-        /// <summary>
-        /// Metoda do mapowania modelu na dto
-        /// </summary>
-        /// <param name="models"></param>
-        /// <param name="dto"></param>
-        protected virtual void CustomGetMapping(List<Model> models, List<ModelDto> dtos)
-        {
-        }
-
-        /// <summary>
-        /// Metoda pomocnicza aktualizująca model
-        /// </summary>
-        /// <param name="update"></param>
-        /// <returns></returns>
-        public virtual Model PutRequest(ModelDto update, List<Model> query)
-        {
-            // do napisania
-            var model = Activator.CreateInstance(typeof(Model)) as Model;
-
-            return model;
-        }
-
-        /// <summary>
-        /// Metoda pomocnicza usuwająca model
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public virtual Model DeleteRequest(ModelDto item, List<Model> query)
-        {
-            //do napisania
-            var model = Activator.CreateInstance(typeof(Model)) as Model;
-
-
-            return model;
-        }
-
-
-        /// <summary>
-        /// Metoda pomocnicza dodająca model
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public virtual Model PostRequest(ModelDto item)
-        { 
-            var mappedItem = StaticMethod.Mapper.Map<Model>(item);
-
-
-            return mappedItem;
-        }
-
-        /// <summary>
-        /// Metoda przygotowująca dane z bazy pod wybrany model
-        /// </summary>
-        /// <returns></returns>
-        protected virtual List<Model> PreparedQuery()
-        {
-            return Context.Set<Model>().ToList();
         }
     }
 }
