@@ -1,4 +1,5 @@
 ﻿using Base.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Validation.Validators;
+//using System.Linq.Dynamic.Core;
+using Database.Scada.Migrations;
+using Database.Scada.Models;
+using Base.StaticMethod;
 
 namespace Base.Services
 {
@@ -41,7 +46,7 @@ namespace Base.Services
             }
 
             foreach (var multi in multiRelations)
-                MapMultiProperty(multi, model);
+                MapMultiProperty(multi, model, update);
 
         }
 
@@ -49,11 +54,42 @@ namespace Base.Services
         /// Metoda dla operacji wykonywanych dla dodawanego obiektu z kolekcją.
         /// </summary>
         /// <param name="property"></param>
-        /// <param name="model"></param>
-        protected void MapMultiProperty(PropertyInfo property, object model)
+        /// <param name="entry"></param>
+        protected void MapMultiProperty(PropertyInfo property, object entry, object update)
         {
             var propertyType = property.PropertyType.GetGenericArguments().First();
-            var modelValue = property.GetValue(model) as IList;
+            var entryValue = property.GetValue(entry) as IList;
+            var modelValue = update != null ? (property.GetValue(update)as IList) : entryValue;
+
+            var collection = Activator.CreateInstance(typeof(List<>).MakeGenericType(propertyType)) as IList;
+
+            if(modelValue != null)
+            {                
+                var set = Context.Set<Model>() //<- tutaj chce dynamiczny model zaleznie co bedzie w propertyType
+                    .AsQueryable();
+
+                var keys = propertyType.GetProperties().Where(a => a.GetCustomAttributes(typeof(KeyAttribute), false).Length > 0).ToList();
+
+                foreach (var item in modelValue)
+                {
+                    var units = ModelOperationQuery(item, keys, set);
+
+                    foreach (var unit in units)
+                    {
+                        collection.Add(unit);
+                    }
+                }
+            }
+
+            property.SetValue(entry, collection);
+        }
+
+        private void SS(PropertyInfo property, object entry, object update)
+        {
+            var propertyType = property.PropertyType.GetGenericArguments().First();
+
+            var set = Context.Set<Unit>()
+                .AsQueryable();
         }
 
         /// <summary>

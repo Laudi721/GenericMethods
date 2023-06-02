@@ -73,5 +73,32 @@ namespace Base.Services
 
             return QueryFilteredByKey(item, ref query);
         }
+
+        private IQueryable ModelOperationQuery(object obj, IEnumerable<PropertyInfo> keys, IQueryable query = null)
+        {
+            var aa = GetTypeProperties(obj.GetType());
+
+            //var query = Context.Set<Model>()
+            //    .AsQueryable();
+
+            var dynamicQuery = new StringBuilder();
+
+            foreach (var key in keys)
+            {
+                dynamic value = key.GetValue(obj);
+
+                if (dynamicQuery.Length == 0)
+                    dynamicQuery.AppendFormat($"{key.Name} = {value}");
+                else
+                    dynamicQuery.AppendFormat($" and {key.Name} = {value}");
+            }
+
+            return string.IsNullOrWhiteSpace(dynamicQuery.ToString()) ? query : query.Where(dynamicQuery.ToString());
+        }
+
+        public static List<PropertyInfo> GetTypeProperties(Type type)
+        {
+            return type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).ToList();
+        }
     }
 }
