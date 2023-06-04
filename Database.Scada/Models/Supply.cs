@@ -9,22 +9,18 @@ using System.Threading.Tasks;
 
 namespace Database.Scada.Models
 {
-    [Table("Units")]
-    public class Unit : IModel
+    [Table("Supplies")]
+    public class Supply
     {
-        public Unit()
-        {
-            Products = new List<Product>();
-        }
-        [Key]
-        public int Id { get; set; }
-
         public bool IsDeleted { get; set; }
 
         public DateTime? TimeDeleted { get; set; }
 
-        public string Name { get; set; }
+        public Product Product { get; set; }
 
-        public virtual List<Product> Products { get; set; }
+        [Key]
+        public int ProductId { get; set; }
+
+        public decimal Quantity { get; set; }
     }
 }

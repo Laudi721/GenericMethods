@@ -23,6 +23,22 @@ namespace Database.Scada
 
         public virtual DbSet<Product> Products { get; set; }
 
+        public virtual DbSet<Address> Addresses { get; set; }
+
+        public virtual DbSet<Contractor> Contractors{ get; set; }
+
+        public virtual DbSet<ProductionOrder> ProductionOrders{ get; set; }
+
+        public virtual DbSet<Skill> Skills{ get; set; }
+
+        public virtual DbSet<Supply> Supplies{ get; set; }
+
+        public virtual DbSet<Transaction> Transactions{ get; set; }
+
+        public virtual DbSet<Contact> Contacts { get; set; }
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>()
@@ -38,6 +54,34 @@ namespace Database.Scada
             modelBuilder.Entity<Unit>()
                 .HasMany(a => a.Products)
                 .WithOne(a => a.Unit);
+
+            modelBuilder.Entity<Address>()
+                .HasMany(a => a.Contractors)
+                .WithOne(a => a.Address);
+
+            modelBuilder.Entity<Contact>()
+                .HasOne(a => a.Contractor)
+                .WithMany(a => a.Contacts);
+
+            modelBuilder.Entity<Contractor>()
+                .HasMany(a => a.ProductionOrders)
+                .WithOne(a => a.Contractor);
+
+            modelBuilder.Entity<Contractor>()
+                .HasMany(a => a.Transactions)
+                .WithOne(a => a.Contractor);
+
+            modelBuilder.Entity<Product>()
+                .HasMany(a => a.ProductionOrders)
+                .WithOne(a => a.Product);
+
+            modelBuilder.Entity<Skill>()
+                .HasMany(a => a.Employees)
+                .WithMany(a => a.Skills);
+
+            modelBuilder.Entity<Supply>()
+                .HasOne(a => a.Product)
+                .WithOne(a => a.Supply);
         }
     }
 }

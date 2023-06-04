@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Database.Scada.Base
 {
-    public class BaseModel
+    public interface IModel
     {
         [Key]
         public int Id { get; set; }

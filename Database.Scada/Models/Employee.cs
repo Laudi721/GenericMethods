@@ -11,8 +11,15 @@ using System.Threading.Tasks;
 namespace Database.Scada.Models
 {
     [Table("Employees")]
-    public class Employee : BaseModel
+    public class Employee : IModel
     {
+        public Employee()
+        {
+            Skills = new List<Skill>();
+        }
+
+        [Key]
+        public int Id { get; set ; }
 
         public string Login { get; set; }
 
@@ -33,5 +40,11 @@ namespace Database.Scada.Models
         public DateTime? Fired { get; set; }
 
         public bool IsFired { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? TimeDeleted { get; set; }
+
+        public virtual List<Skill> Skills { get; set; }
     }
 }
