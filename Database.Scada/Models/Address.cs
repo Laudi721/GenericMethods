@@ -9,23 +9,29 @@ using System.Threading.Tasks;
 
 namespace Database.Scada.Models
 {
-    [Table("Roles")]
-    public class Role : IModel
+    [Table("Addresses")]
+    public class Address : IModel
     {
-        public Role()
+        public Address()
         {
-            Employees = new List<Employee>();
+            Contractors = new List<Contractor>();
         }
 
         [Key]
         public int Id { get; set; }
 
-        public string Name { get; set; }
-
-        public virtual List<Employee> Employees { get; set; }
-
         public bool IsDeleted { get; set; }
 
         public DateTime? TimeDeleted { get; set; }
+
+        public string City { get; set; }
+
+        public string Street { get; set; }
+
+        public string BuildingNumber { get; set; }
+
+        public string PostalCode { get; set; }
+
+        public virtual List<Contractor> Contractors { get; set; }
     }
 }
