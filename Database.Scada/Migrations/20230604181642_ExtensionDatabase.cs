@@ -90,7 +90,7 @@ namespace Database.Scada.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployeeSkill",
+                name: "EmployyesSkills",
                 columns: table => new
                 {
                     EmployeesId = table.Column<int>(type: "int", nullable: false),
@@ -98,15 +98,15 @@ namespace Database.Scada.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeSkill", x => new { x.EmployeesId, x.SkillsId });
+                    table.PrimaryKey("PK_EmployyesSkills", x => new { x.EmployeesId, x.SkillsId });
                     table.ForeignKey(
-                        name: "FK_EmployeeSkill_Employees_EmployeesId",
+                        name: "FK_EmployyesSkills_Employees_EmployeesId",
                         column: x => x.EmployeesId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmployeeSkill_Skills_SkillsId",
+                        name: "FK_EmployyesSkills_Skills_SkillsId",
                         column: x => x.SkillsId,
                         principalTable: "Skills",
                         principalColumn: "Id",
@@ -211,8 +211,8 @@ namespace Database.Scada.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeSkill_SkillsId",
-                table: "EmployeeSkill",
+                name: "IX_EmployyesSkills_SkillsId",
+                table: "EmployyesSkills",
                 column: "SkillsId");
 
             migrationBuilder.CreateIndex(
@@ -249,7 +249,7 @@ namespace Database.Scada.Migrations
                 name: "Contacts");
 
             migrationBuilder.DropTable(
-                name: "EmployeeSkill");
+                name: "EmployyesSkills");
 
             migrationBuilder.DropTable(
                 name: "ProductionOrders");

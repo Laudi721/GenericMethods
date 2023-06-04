@@ -39,12 +39,6 @@ namespace Database.Scada
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Role>()
-                .HasKey(a => a.Id);
-                
-            modelBuilder.Entity<Employee>()
-                .HasKey(a => a.Id);
-
             modelBuilder.Entity<Employee>()
                 .HasOne(a => a.Role)
                 .WithMany(a => a.Employees);
@@ -75,7 +69,8 @@ namespace Database.Scada
 
             modelBuilder.Entity<Skill>()
                 .HasMany(a => a.Employees)
-                .WithMany(a => a.Skills);
+                .WithMany(a => a.Skills)
+                .UsingEntity("EmployyesSkills");
 
             modelBuilder.Entity<StockState>()
                 .HasOne(a => a.Product)

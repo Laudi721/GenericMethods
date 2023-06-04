@@ -371,7 +371,7 @@ namespace Database.Scada.Migrations
                     b.ToTable("Units");
                 });
 
-            modelBuilder.Entity("EmployeeSkill", b =>
+            modelBuilder.Entity("EmployyesSkills", b =>
                 {
                     b.Property<int>("EmployeesId")
                         .HasColumnType("int");
@@ -383,7 +383,7 @@ namespace Database.Scada.Migrations
 
                     b.HasIndex("SkillsId");
 
-                    b.ToTable("EmployeeSkill");
+                    b.ToTable("EmployyesSkills");
                 });
 
             modelBuilder.Entity("Database.Scada.Models.Contact", b =>
@@ -464,7 +464,7 @@ namespace Database.Scada.Migrations
                     b.Navigation("Contractor");
                 });
 
-            modelBuilder.Entity("EmployeeSkill", b =>
+            modelBuilder.Entity("EmployyesSkills", b =>
                 {
                     b.HasOne("Database.Scada.Models.Employee", null)
                         .WithMany()

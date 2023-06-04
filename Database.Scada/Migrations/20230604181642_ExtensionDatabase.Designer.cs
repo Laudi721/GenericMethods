@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Scada.Migrations
 {
     [DbContext(typeof(ScadaDbContext))]
-    [Migration("20230604172044_ExtensionDatabase")]
+    [Migration("20230604181642_ExtensionDatabase")]
     partial class ExtensionDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -373,7 +373,7 @@ namespace Database.Scada.Migrations
                     b.ToTable("Units");
                 });
 
-            modelBuilder.Entity("EmployeeSkill", b =>
+            modelBuilder.Entity("EmployyesSkills", b =>
                 {
                     b.Property<int>("EmployeesId")
                         .HasColumnType("int");
@@ -385,7 +385,7 @@ namespace Database.Scada.Migrations
 
                     b.HasIndex("SkillsId");
 
-                    b.ToTable("EmployeeSkill");
+                    b.ToTable("EmployyesSkills");
                 });
 
             modelBuilder.Entity("Database.Scada.Models.Contact", b =>
@@ -466,7 +466,7 @@ namespace Database.Scada.Migrations
                     b.Navigation("Contractor");
                 });
 
-            modelBuilder.Entity("EmployeeSkill", b =>
+            modelBuilder.Entity("EmployyesSkills", b =>
                 {
                     b.HasOne("Database.Scada.Models.Employee", null)
                         .WithMany()
