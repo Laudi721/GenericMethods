@@ -32,9 +32,9 @@ namespace Database.Scada.Models
 
         public DateTime? TimeDeleted { get; set; }
 
-        public Supply Supply { get; set; }
+        public StockState StockState { get; set; }
 
-        public int SupplyId { get; set; }
+        public int StockStateId { get; set; }
 
         public virtual List<ProductionOrder> ProductionOrders { get; set; }
     }

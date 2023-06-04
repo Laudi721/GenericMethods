@@ -1,5 +1,4 @@
-﻿using Database.Scada.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Database.Scada.Models
 {
-    [Table("Supplies")]
-    public class Supply
+    [Table("StockStates")]
+    public class StockState
     {
         public bool IsDeleted { get; set; }
 

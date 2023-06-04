@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Scada.Migrations
 {
     [DbContext(typeof(ScadaDbContext))]
-    [Migration("20230604143015_ExtensionDatabase")]
+    [Migration("20230604172044_ExtensionDatabase")]
     partial class ExtensionDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -192,7 +192,7 @@ namespace Database.Scada.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SupplyId")
+                    b.Property<int>("StockStateId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("TimeDeleted")
@@ -203,7 +203,7 @@ namespace Database.Scada.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SupplyId")
+                    b.HasIndex("StockStateId")
                         .IsUnique();
 
                     b.HasIndex("UnitId");
@@ -224,6 +224,9 @@ namespace Database.Scada.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("OrderNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -293,7 +296,7 @@ namespace Database.Scada.Migrations
                     b.ToTable("Skills");
                 });
 
-            modelBuilder.Entity("Database.Scada.Models.Supply", b =>
+            modelBuilder.Entity("Database.Scada.Models.StockState", b =>
                 {
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
@@ -312,7 +315,7 @@ namespace Database.Scada.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.ToTable("Supplies");
+                    b.ToTable("StockStates");
                 });
 
             modelBuilder.Entity("Database.Scada.Models.Transaction", b =>
@@ -416,9 +419,9 @@ namespace Database.Scada.Migrations
 
             modelBuilder.Entity("Database.Scada.Models.Product", b =>
                 {
-                    b.HasOne("Database.Scada.Models.Supply", "Supply")
+                    b.HasOne("Database.Scada.Models.StockState", "StockState")
                         .WithOne("Product")
-                        .HasForeignKey("Database.Scada.Models.Product", "SupplyId")
+                        .HasForeignKey("Database.Scada.Models.Product", "StockStateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -428,7 +431,7 @@ namespace Database.Scada.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Supply");
+                    b.Navigation("StockState");
 
                     b.Navigation("Unit");
                 });
@@ -502,7 +505,7 @@ namespace Database.Scada.Migrations
                     b.Navigation("Employees");
                 });
 
-            modelBuilder.Entity("Database.Scada.Models.Supply", b =>
+            modelBuilder.Entity("Database.Scada.Models.StockState", b =>
                 {
                     b.Navigation("Product");
                 });

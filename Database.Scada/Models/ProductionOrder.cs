@@ -17,9 +17,7 @@ namespace Database.Scada.Models
         [Key]
         public int Id { get; set; }
 
-        public bool IsDeleted { get; set; }
-
-        public DateTime? TimeDeleted { get; set; }
+        public string OrderNumber { get; set; }
 
         public Contractor Contractor { get; set; }
 
@@ -36,5 +34,9 @@ namespace Database.Scada.Models
 
         [Column(TypeName = "datetime2")]
         public DateTime ScheduledEndTime { get; set;}
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? TimeDeleted { get; set; }
     }
 }

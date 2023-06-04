@@ -31,13 +31,11 @@ namespace Database.Scada
 
         public virtual DbSet<Skill> Skills{ get; set; }
 
-        public virtual DbSet<Supply> Supplies{ get; set; }
+        public virtual DbSet<StockState> StockStates { get; set; }
 
         public virtual DbSet<Transaction> Transactions{ get; set; }
 
         public virtual DbSet<Contact> Contacts { get; set; }
-
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -79,9 +77,9 @@ namespace Database.Scada
                 .HasMany(a => a.Employees)
                 .WithMany(a => a.Skills);
 
-            modelBuilder.Entity<Supply>()
+            modelBuilder.Entity<StockState>()
                 .HasOne(a => a.Product)
-                .WithOne(a => a.Supply);
+                .WithOne(a => a.StockState);
         }
     }
 }

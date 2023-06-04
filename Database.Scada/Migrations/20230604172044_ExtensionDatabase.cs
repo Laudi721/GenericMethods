@@ -10,7 +10,7 @@ namespace Database.Scada.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "SupplyId",
+                name: "StockStateId",
                 table: "Products",
                 type: "int",
                 nullable: false,
@@ -50,7 +50,7 @@ namespace Database.Scada.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Supplies",
+                name: "StockStates",
                 columns: table => new
                 {
                     ProductId = table.Column<int>(type: "int", nullable: false)
@@ -61,7 +61,7 @@ namespace Database.Scada.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Supplies", x => x.ProductId);
+                    table.PrimaryKey("PK_StockStates", x => x.ProductId);
                 });
 
             migrationBuilder.CreateTable(
@@ -144,13 +144,14 @@ namespace Database.Scada.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    TimeDeleted = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    OrderNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContractorId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quanity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ScheduledStartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ScheduledEndTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ScheduledEndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    TimeDeleted = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -194,9 +195,9 @@ namespace Database.Scada.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_SupplyId",
+                name: "IX_Products_StockStateId",
                 table: "Products",
-                column: "SupplyId",
+                column: "StockStateId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -230,10 +231,10 @@ namespace Database.Scada.Migrations
                 column: "ContractorId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Products_Supplies_SupplyId",
+                name: "FK_Products_StockStates_StockStateId",
                 table: "Products",
-                column: "SupplyId",
-                principalTable: "Supplies",
+                column: "StockStateId",
+                principalTable: "StockStates",
                 principalColumn: "ProductId",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -241,7 +242,7 @@ namespace Database.Scada.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Products_Supplies_SupplyId",
+                name: "FK_Products_StockStates_StockStateId",
                 table: "Products");
 
             migrationBuilder.DropTable(
@@ -254,7 +255,7 @@ namespace Database.Scada.Migrations
                 name: "ProductionOrders");
 
             migrationBuilder.DropTable(
-                name: "Supplies");
+                name: "StockStates");
 
             migrationBuilder.DropTable(
                 name: "Transactions");
@@ -269,11 +270,11 @@ namespace Database.Scada.Migrations
                 name: "Addresses");
 
             migrationBuilder.DropIndex(
-                name: "IX_Products_SupplyId",
+                name: "IX_Products_StockStateId",
                 table: "Products");
 
             migrationBuilder.DropColumn(
-                name: "SupplyId",
+                name: "StockStateId",
                 table: "Products");
         }
     }
