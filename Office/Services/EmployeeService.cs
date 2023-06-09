@@ -10,7 +10,7 @@ namespace Office.Services
 {
     public class EmployeeService : GenericService<Employee, EmployeeDto>, IEmployeeService
     {
-        public EmployeeService(ScadaDbContext context) : base(context)
+        public EmployeeService(ApplicationDbContext context) : base(context)
         {
         }
 

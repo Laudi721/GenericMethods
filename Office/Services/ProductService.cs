@@ -9,7 +9,7 @@ namespace Office.Services
 {
     public class ProductService : GenericService<Product, ProductDto>, IProductService
     {
-        public ProductService(ScadaDbContext context) : base(context)
+        public ProductService(ApplicationDbContext context) : base(context)
         {
         }
 

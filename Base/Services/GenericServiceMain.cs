@@ -11,9 +11,9 @@ namespace Base.Services
     public abstract partial class GenericService<Model, ModelDto> : IGenericService<ModelDto> where ModelDto : class
                                                                                       where Model : class
     {
-        protected readonly ScadaDbContext Context;
+        protected readonly ApplicationDbContext Context;
 
-        public GenericService(ScadaDbContext context)
+        public GenericService(ApplicationDbContext context)
         {
             Context = context;
         }

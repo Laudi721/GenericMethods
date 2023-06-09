@@ -4,13 +4,13 @@ using System;
 
 namespace Database.Scada
 {
-    public class ScadaDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public ScadaDbContext()
+        public ApplicationDbContext()
         {
 
         }
-        public ScadaDbContext(DbContextOptions<ScadaDbContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
         }

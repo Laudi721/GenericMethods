@@ -10,10 +10,10 @@ namespace Database.Scada.Seeders
 {
     public class AdminSeeder
     {
-        private readonly ScadaDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly IPasswordHasher<Employee> _passwordHasher;
 
-        public AdminSeeder(ScadaDbContext context, IPasswordHasher<Employee> passwordHasher)
+        public AdminSeeder(ApplicationDbContext context, IPasswordHasher<Employee> passwordHasher)
         {
             _context = context;
             _passwordHasher = passwordHasher;

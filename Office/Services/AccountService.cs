@@ -18,7 +18,7 @@ namespace Office.Services
         private readonly IPasswordHasher<Employee> _passwordHasher;
         private readonly AuthenticationSettings _authenticationSettings;
 
-        public AccountService(ScadaDbContext context, IPasswordHasher<Employee> passwordHasher, AuthenticationSettings authenticationSettings) : base(context)
+        public AccountService(ApplicationDbContext context, IPasswordHasher<Employee> passwordHasher, AuthenticationSettings authenticationSettings) : base(context)
         {
             _passwordHasher = passwordHasher;
             _authenticationSettings = authenticationSettings;

@@ -9,7 +9,7 @@ namespace Office.Services
 {
     public class RoleService : GenericService<Role, RoleDto>, IRoleService
     {
-        public RoleService(ScadaDbContext context) : base(context)
+        public RoleService(ApplicationDbContext context) : base(context)
         {
         }
 
