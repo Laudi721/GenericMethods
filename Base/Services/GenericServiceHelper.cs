@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Validation.Validators;
 //using System.Linq.Dynamic.Core;
-using Database.Scada.Migrations;
 using Database.Scada.Models;
 using Base.StaticMethod;
 
