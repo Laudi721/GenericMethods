@@ -72,12 +72,10 @@ namespace Base.Services
             {
                 var query = PreparedQuery();
 
-                var model = await DeleteQuery(item).FirstOrDefaultAsync();
+                var model = await DeleteQuery(item, ref query).FirstOrDefaultAsync();
 
                 if (model == null)
                     return false;
-
-                //model = query.FirstOrDefault(a => a.Equals(model));
 
                 if (!AdditionalCheckBeforeDelete(model))
                 {

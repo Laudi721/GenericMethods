@@ -108,10 +108,9 @@ namespace Base.Services
                 .Where(a => !a.PropertyType.IsSealed && typeof(IEnumerable).IsAssignableFrom(a.PropertyType))
                 .ToList();
 
-            foreach (var single in singleRelations)
-            {
+            foreach (var single in singleRelations)            
                 single.SetValue(model, null);
-            }
+            
 
             foreach (var multi in multiRelations)
                 multi.SetValue(model, null);
@@ -132,7 +131,7 @@ namespace Base.Services
         /// <returns></returns>
         protected virtual bool AdditionalCheckBeforeDelete(Model model)
         {
-            return false;
+            return true;
         }
     }
 }

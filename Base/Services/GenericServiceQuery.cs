@@ -63,14 +63,12 @@ namespace Base.Services
         }
 
         /// <summary>
-        /// Metoda wybierająca model, który zostanie usunięty.
+        /// Metoda zwracająca model do usunięcia
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        protected virtual IQueryable<Model> DeleteQuery(ModelDto item)
+        protected virtual IQueryable<Model> DeleteQuery(ModelDto item, ref IQueryable<Model> query)
         {
-            IQueryable<Model> query = Context.Set<Model>();
-
             return QueryFilteredByKey(item, ref query);
         }
 
