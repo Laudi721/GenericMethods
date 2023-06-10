@@ -18,6 +18,8 @@ namespace Base.Services
             Context = context;
         }
 
+
+
         /// <summary>
         /// Generyczna metoda zwracająca dane z modelu
         /// </summary>
@@ -65,32 +67,36 @@ namespace Base.Services
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         public virtual async Task<bool> DeleteAsync([FromBody] ModelDto item)
-        {            
-            var query = PreparedQuery();
-
-            var model = await DeleteQuery(item).FirstOrDefaultAsync();
-
-            if (model == null)
-                return false;
-
-            model = query.FirstOrDefault(a => a.Equals(model));
-
-            if (!AdditionalCheckBeforeDelete(model))
+        {
+            using (var transaction = Context.Database.BeginTransaction())
             {
-                Console.WriteLine($"ConsoleLog: Błąd podczas usuwania modelu z bazy: {typeof(Model).Name}");
-                return false;
-            }
+                var query = PreparedQuery();
 
-            DeleteRequest(model);
+                var model = await DeleteQuery(item).FirstOrDefaultAsync();
 
-            try
-            {
-                await Context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                return false;
-                throw new Exception(e.ToString());
+                if (model == null)
+                    return false;
+
+                //model = query.FirstOrDefault(a => a.Equals(model));
+
+                if (!AdditionalCheckBeforeDelete(model))
+                {
+                    return false;
+                }
+
+                DeleteRequest(model);
+
+                try
+                {
+                    await Context.SaveChangesAsync();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    return false;
+                }
+
+                transaction.Commit();
             }
 
             return true;

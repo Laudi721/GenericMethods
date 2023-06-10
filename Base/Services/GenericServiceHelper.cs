@@ -98,8 +98,15 @@ namespace Base.Services
         /// <returns></returns>
         private Model DeleteModel(Model model)
         {
-            var singleRelations = model.GetType().GetProperties().Where(a => !a.PropertyType.IsSealed && !typeof(IEnumerable).IsAssignableFrom(a.PropertyType)).ToList();
-            var multiRelations = model.GetType().GetProperties().Where(a => !a.PropertyType.IsSealed && typeof(IEnumerable).IsAssignableFrom(a.PropertyType)).ToList();
+            var singleRelations = model.GetType()
+                .GetProperties()
+                .Where(a => !a.PropertyType.IsSealed && !typeof(IEnumerable).IsAssignableFrom(a.PropertyType))
+                .ToList();
+
+            var multiRelations = model.GetType()
+                .GetProperties()
+                .Where(a => !a.PropertyType.IsSealed && typeof(IEnumerable).IsAssignableFrom(a.PropertyType))
+                .ToList();
 
             foreach (var single in singleRelations)
             {
