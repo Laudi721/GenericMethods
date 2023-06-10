@@ -30,10 +30,10 @@ namespace Database.Scada.Models
         public decimal Quanity { get; set; }
 
         [Column(TypeName = "datetime2")]
-        public DateTime ScheduledStartTime { get; set; }
+        public DateTime CreatedDateTime{ get; set; }
 
         [Column(TypeName = "datetime2")]
-        public DateTime ScheduledEndTime { get; set;}
+        public DateTime RealizationDateTime { get; set;}
 
         public bool IsDeleted { get; set; }
 

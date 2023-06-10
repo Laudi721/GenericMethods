@@ -26,6 +26,7 @@ namespace Database.Scada.Models
 
         public bool IsDeleted { get; set; }
 
+        [Column(TypeName = "datetime2")]
         public DateTime? TimeDeleted { get; set; }
     }
 }

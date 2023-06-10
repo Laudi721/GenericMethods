@@ -15,26 +15,16 @@ namespace Database.Scada.Models
         public Contractor()
         {
             ProductionOrders = new List<ProductionOrder>();
-            Transactions = new List<Transaction>();
-            Contacts = new List<Contact>();
         }
 
         [Key]
         public int Id { get; set; }
 
-        public bool IsDeleted { get; set; }
-
-        public DateTime? TimeDeleted { get; set; }
-
         public string Name { get; set; }
 
+        public string Address { get; set; }
+
         public string Description { get; set; }
-
-        public Address Address { get; set; }
-
-        public int AddressId { get; set; }
-
-        public virtual List<Contact> Contacts{ get; set; }
 
         public string NIP { get; set; }
 
@@ -42,6 +32,9 @@ namespace Database.Scada.Models
 
         public virtual List<ProductionOrder> ProductionOrders { get; set; }
 
-        public virtual List<Transaction> Transactions { get; set; }
+        public bool IsDeleted { get; set; }
+
+        [Column(TypeName = "datetime2")]
+        public DateTime? TimeDeleted { get; set; }
     }
 }

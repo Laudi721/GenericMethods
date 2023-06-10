@@ -28,14 +28,11 @@ namespace Database.Scada.Models
 
         public int UnitId { get; set; }
 
+        public virtual List<ProductionOrder> ProductionOrders { get; set; }
+
         public bool IsDeleted { get; set; }
 
+        [Column(TypeName = "datetime2")]
         public DateTime? TimeDeleted { get; set; }
-
-        public StockState StockState { get; set; }
-
-        public int StockStateId { get; set; }
-
-        public virtual List<ProductionOrder> ProductionOrders { get; set; }
     }
 }
