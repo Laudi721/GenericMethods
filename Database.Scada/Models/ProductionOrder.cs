@@ -1,4 +1,5 @@
-﻿using Database.Scada.Base;
+﻿using Database.GenericMethods.Models;
+using Database.Scada.Base;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,17 @@ namespace Database.Scada.Models
     [Table("ProductionOrders")]
     public class ProductionOrder : IModel
     {
+        public ProductionOrder()
+        {
+            Operations = new List<Operation>();
+        }
+
         [Key]
         public int Id { get; set; }
 
         public string OrderNumber { get; set; }
+
+        public virtual List<Operation> Operations { get; set; }
 
         public Contractor Contractor { get; set; }
 

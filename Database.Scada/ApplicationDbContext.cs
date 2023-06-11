@@ -1,4 +1,5 @@
-﻿using Database.Scada.Models;
+﻿using Database.GenericMethods.Models;
+using Database.Scada.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -14,11 +15,11 @@ namespace Database.Scada
         {
 
         }
+
+        public virtual DbSet<Address> Addresses { get; set; }
+
+        public virtual DbSet<Operation> Operations { get; set; }
         
-        public virtual DbSet<Role> Roles { get; set; }
-
-        public virtual DbSet<Employee> Employees { get; set; }
-
         public virtual DbSet<Unit> Units { get; set; }
 
         public virtual DbSet<Product> Products { get; set; }
@@ -29,10 +30,6 @@ namespace Database.Scada
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Employee>()
-                .HasOne(a => a.Role)
-                .WithMany(a => a.Employees);
-
             modelBuilder.Entity<Unit>()
                 .HasMany(a => a.Products)
                 .WithOne(a => a.Unit);
@@ -48,6 +45,14 @@ namespace Database.Scada
             modelBuilder.Entity<ProductionOrder>()
                 .HasOne(a => a.Contractor)
                 .WithMany(a => a.ProductionOrders);
+
+            modelBuilder.Entity<Contractor>()
+                .HasMany(a => a.Addresses)
+                .WithMany(a => a.Contractors);
+
+            modelBuilder.Entity<Operation>()
+                .HasMany(a => a.ProductionOrders)
+                .WithMany(a => a.Operations);
         }
     }
 }

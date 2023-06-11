@@ -1,4 +1,5 @@
-﻿using Database.Scada.Base;
+﻿using Database.GenericMethods.Models;
+using Database.Scada.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +16,7 @@ namespace Database.Scada.Models
         public Contractor()
         {
             ProductionOrders = new List<ProductionOrder>();
+            Addresses = new List<Address>();
         }
 
         [Key]
@@ -31,6 +33,8 @@ namespace Database.Scada.Models
         public string REGON { get; set; }
 
         public virtual List<ProductionOrder> ProductionOrders { get; set; }
+
+        public virtual List<Address> Addresses { get; set; }
 
         public bool IsDeleted { get; set; }
 

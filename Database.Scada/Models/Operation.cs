@@ -1,4 +1,5 @@
 ﻿using Database.Scada.Base;
+using Database.Scada.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,14 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Database.Scada.Models
+namespace Database.GenericMethods.Models
 {
-    [Table("Roles")]
-    public class Role : IModel
+    [Table("Operations")]
+    public class Operation : IModel
     {
-        public Role()
+        public Operation()
         {
-            Employees = new List<Employee>();
+            ProductionOrders = new List<ProductionOrder>();
         }
 
         [Key]
@@ -22,11 +23,12 @@ namespace Database.Scada.Models
 
         public string Name { get; set; }
 
-        public virtual List<Employee> Employees { get; set; }
+        public string Description { get; set; }
+
+        public virtual List<ProductionOrder> ProductionOrders { get; set; }
 
         public bool IsDeleted { get; set; }
 
-        [Column(TypeName = "datetime2")]
         public DateTime? TimeDeleted { get; set; }
     }
 }

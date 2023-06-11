@@ -1,6 +1,5 @@
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Office.Interfaces;
 using Office.Services;
 using Office.Authentication;
@@ -8,8 +7,6 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Dtos.Dtos;
 using Database.Scada;
-using Database.Scada.Seeders;
-using Database.Scada.Models;
 using Base.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,8 +21,8 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("GMConnectionString");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 //builder.Services.AddDbContext<Scada>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("ScadaConnectionString")));
-builder.Services.AddScoped<AdminSeeder>();
-builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
+//builder.Services.AddScoped<AdminSeeder>();
+//builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
 
 //Authentication
 var authenticationSettings = new AuthenticationSettings();
@@ -72,24 +69,24 @@ app.Run();
 
 void SeedDatabase()
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var seeder = scope.ServiceProvider.GetRequiredService<AdminSeeder>();
-        seeder.AdminSeed();
-    }
+    //using (var scope = app.Services.CreateScope())
+    //{
+    //    var seeder = scope.ServiceProvider.GetRequiredService<AdminSeeder>();
+    //    seeder.AdminSeed();
+    //}
 }
 
 ///Dependency injection
 void DependencyInjection(WebApplicationBuilder builder)
 {
-    builder.Services.AddScoped<IAccountService, AccountService>();
-    builder.Services.AddSingleton(authenticationSettings);
+    //builder.Services.AddScoped<IAccountService, AccountService>();
+    //builder.Services.AddSingleton(authenticationSettings);
 
-    builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-    builder.Services.AddScoped<IGenericService<EmployeeDto>, EmployeeService>();
+    //builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+    //builder.Services.AddScoped<IGenericService<EmployeeDto>, EmployeeService>();
 
-    builder.Services.AddScoped<IRoleService, RoleService>();
-    builder.Services.AddScoped<IGenericService<RoleDto>, RoleService>();
+    //builder.Services.AddScoped<IRoleService, RoleService>();
+    //builder.Services.AddScoped<IGenericService<RoleDto>, RoleService>();
 
     builder.Services.AddScoped<IUnitService, UnitService>();
     builder.Services.AddScoped<IGenericService<UnitDto>, UnitService>();

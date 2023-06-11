@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\AccountController.cs" />
+    <Compile Remove="Controllers\EmployeeController.cs" />
+    <Compile Remove="Controllers\RoleController.cs" />
+    <Compile Remove="Interfaces\IAccountService.cs" />
+    <Compile Remove="Interfaces\IEmployeeService.cs" />
+    <Compile Remove="Interfaces\IRoleService.cs" />
+    <Compile Remove="Services\AccountService.cs" />
+    <Compile Remove="Services\EmployeeService.cs" />
+    <Compile Remove="Services\RoleService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.15" />

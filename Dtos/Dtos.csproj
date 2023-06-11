@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Dtos\EmployeeDto.cs" />
+    <Compile Remove="Dtos\LoginDto.cs" />
+    <Compile Remove="Dtos\RoleDto.cs" />
+  </ItemGroup>
+
 </Project>
