@@ -1,7 +1,6 @@
 ﻿using Base.Services;
-using Database.GenericMethods.Models;
-using Database.Scada;
-using Database.Scada.Models;
+using Database;
+using Database.Models;
 using Dtos.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Office.Interfaces;
@@ -15,7 +14,7 @@ namespace Office.Services
 {
     public class AddressService : GenericService<Address, AddressDto>, IAddressService
     {
-        public AddressService(ApplicationDbContext context) : base(context)
+        public AddressService(ApplicationContext context) : base(context)
         {
         }
 

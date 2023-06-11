@@ -1,5 +1,6 @@
 ﻿using Base.Interfaces;
-using Database.Scada;
+using Database;
+//using Database.Scada;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
@@ -11,9 +12,9 @@ namespace Base.Services
     public abstract partial class GenericService<Model, ModelDto> : IGenericService<ModelDto> where ModelDto : class
                                                                                       where Model : class
     {
-        protected readonly ApplicationDbContext Context;
+        protected readonly ApplicationContext Context;
 
-        public GenericService(ApplicationDbContext context)
+        public GenericService(ApplicationContext context)
         {
             Context = context;
         }

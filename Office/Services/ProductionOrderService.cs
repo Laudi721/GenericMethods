@@ -1,6 +1,6 @@
 ﻿using Base.Services;
-using Database.Scada;
-using Database.Scada.Models;
+using Database;
+using Database.Models;
 using Dtos.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Office.Interfaces;
@@ -14,7 +14,7 @@ namespace Office.Services
 {
     public class ProductionOrderService : GenericService<ProductionOrder, ProductionOrderDto>, IProductionOrderService
     {
-        public ProductionOrderService(ApplicationDbContext context) : base(context)
+        public ProductionOrderService(ApplicationContext context) : base(context)
         {
         }
 

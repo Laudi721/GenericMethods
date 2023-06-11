@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Base\Base.csproj" />
-    <ProjectReference Include="..\Database.Scada\Database.GenericMethods.csproj" />
+    <ProjectReference Include="..\Database\Database.csproj" />
     <ProjectReference Include="..\Dtos\Dtos.csproj" />
     <ProjectReference Include="..\Exceptions\ErrorHandling.csproj" />
   </ItemGroup>

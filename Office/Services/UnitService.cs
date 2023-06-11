@@ -1,6 +1,6 @@
 ﻿using Base.Services;
-using Database.Scada;
-using Database.Scada.Models;
+using Database;
+using Database.Models;
 using Dtos.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Office.Interfaces;
@@ -9,7 +9,7 @@ namespace Office.Services
 {
     public class UnitService : GenericService<Unit, UnitDto>, IUnitService
     {
-        public UnitService(ApplicationDbContext context) : base(context)
+        public UnitService(ApplicationContext context) : base(context)
         {
         }
 

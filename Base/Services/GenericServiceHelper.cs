@@ -1,17 +1,9 @@
 ﻿using Base.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http.Validation.Validators;
 //using System.Linq.Dynamic.Core;
-using Database.Scada.Models;
-using Base.StaticMethod;
 
 namespace Base.Services
 {
@@ -63,9 +55,12 @@ namespace Base.Services
             var collection = Activator.CreateInstance(typeof(List<>).MakeGenericType(propertyType)) as IList;
 
             if(modelValue != null)
-            {                
+            {
                 var set = Context.Set<Model>() //<- tutaj chce dynamiczny model zaleznie co bedzie w propertyType
                     .AsQueryable();
+
+                var set1 = Context.GetType().GetMethods().Where(a => a.Name == "Set" && a.GetGenericArguments().Length == 1 && a.GetParameters().Length == 0);
+                var genericSetMethod = set1.Single(m => m.Name == "Set" && m.GetGenericArguments()[0] == propertyType);
 
                 var keys = propertyType.GetProperties().Where(a => a.GetCustomAttributes(typeof(KeyAttribute), false).Length > 0).ToList();
 
@@ -81,14 +76,6 @@ namespace Base.Services
             }
 
             property.SetValue(entry, collection);
-        }
-
-        private void SS(PropertyInfo property, object entry, object update)
-        {
-            var propertyType = property.PropertyType.GetGenericArguments().First();
-
-            var set = Context.Set<Unit>()
-                .AsQueryable();
         }
 
         /// <summary>
