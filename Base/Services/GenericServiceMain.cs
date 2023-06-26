@@ -1,6 +1,5 @@
 ﻿using Base.Interfaces;
 using Database;
-//using Database.Scada;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
@@ -18,8 +17,6 @@ namespace Base.Services
         {
             Context = context;
         }
-
-
 
         /// <summary>
         /// Generyczna metoda zwracająca dane z modelu

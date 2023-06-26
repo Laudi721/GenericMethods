@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Database;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections;
 using System.Dynamic;
@@ -64,7 +65,7 @@ namespace Base.StaticMethod
         /// <param name="result"></param>
         /// <param name="mappingLevel"></param>
         /// <returns></returns>
-        private static object Map(object source, Type result, int mappingLevel = 2)
+        private  static object Map(object source, Type result, int mappingLevel = 2)
         {
             if (source == null)
                 return null;

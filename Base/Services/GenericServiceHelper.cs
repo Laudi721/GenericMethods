@@ -1,9 +1,11 @@
 ﻿using Base.Interfaces;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Base.StaticMethod;
+using Database;
+using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
-//using System.Linq.Dynamic.Core;
 
 namespace Base.Services
 {
@@ -54,28 +56,40 @@ namespace Base.Services
 
             var collection = Activator.CreateInstance(typeof(List<>).MakeGenericType(propertyType)) as IList;
 
-            if(modelValue != null)
+            if (modelValue != null)
             {
-                var set = Context.Set<Model>() //<- tutaj chce dynamiczny model zaleznie co bedzie w propertyType
-                    .AsQueryable();
-
-                var set1 = Context.GetType().GetMethods().Where(a => a.Name == "Set" && a.GetGenericArguments().Length == 1 && a.GetParameters().Length == 0);
-                var genericSetMethod = set1.Single(m => m.Name == "Set" && m.GetGenericArguments()[0] == propertyType);
-
-                var keys = propertyType.GetProperties().Where(a => a.GetCustomAttributes(typeof(KeyAttribute), false).Length > 0).ToList();
-
                 foreach (var item in modelValue)
                 {
-                    var units = ModelOperationQuery(item, keys, set);
+                    var itemKey = item.GetType().GetProperty("Id").GetValue(item);
+                    var tableAttribute = propertyType.GetCustomAttribute<TableAttribute>();
+                    var tableName = tableAttribute.Name;
+                    var tableName2 = Context.Model.FindEntityType(propertyType).GetTableName();
 
-                    foreach (var unit in units)
-                    {
-                        collection.Add(unit);
-                    }
+                    var existingModel = Context.Find(propertyType, itemKey);
+
+                    collection.Add(existingModel);
                 }
-            }
 
-            property.SetValue(entry, collection);
+                property.SetValue(entry, collection);
+            }
+            //    var set = Context.Set<Model>();
+
+            //    //var set = Context.GetType().GetProperties();
+
+            //    var keys = propertyType.GetProperties().Where(a => a.GetCustomAttributes(typeof(KeyAttribute), false).Length > 0).ToList();
+
+            //    foreach (var item in modelValue)
+            //    {
+            //        var units = ModelOperationQuery(item, keys, set);
+
+            //        foreach (var unit in units)
+            //        {
+            //            collection.Add(unit);
+            //        }
+            //    }
+            //}
+
+            //property.SetValue(entry, collection);
         }
 
         /// <summary>
